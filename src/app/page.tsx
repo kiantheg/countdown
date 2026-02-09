@@ -109,7 +109,7 @@ export default function Home() {
 
     try {
       const response = await fetch(
-        `/flight?number=${encodeURIComponent(number)}&date=${encodeURIComponent(date)}`
+        `/api/flight?number=${encodeURIComponent(number)}&date=${encodeURIComponent(date)}`
       );
       const payload: FlightResponse = await response.json();
       if (!response.ok) {
@@ -177,7 +177,7 @@ export default function Home() {
         if (flight?.terminal) {
           params.set("arrivalTerminal", flight.terminal);
         }
-        const response = await fetch(`/drive?${params.toString()}`);
+        const response = await fetch(`/api/drive?${params.toString()}`);
         const payload: DriveResponse = await response.json();
         if (!response.ok) {
           setDrive(null);
