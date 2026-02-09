@@ -445,7 +445,7 @@ export default function Home() {
                 Drive ETA
               </p>
               <h3 className="font-display text-2xl font-semibold text-white">
-                SFO → Hayward → Stanford
+                SFO → Hayward → Duan Family Hall
               </h3>
             </div>
             <span className="rounded-full bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-[#c7d2e5]">

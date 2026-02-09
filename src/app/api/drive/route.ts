@@ -6,7 +6,7 @@ const cache = new Map<string, { expiresAt: number; payload: unknown }>();
 const CACHE_TTL_MS = 60_000;
 
 const WAYPOINT = "1256 West St, Hayward, CA";
-const DESTINATION = "757 Campus Drive, Stanford, CA 94305";
+const DESTINATION = "Duan Family Hall, Stanford, CA 94305";
 const STOP_BUFFER_SEC = 15 * 60;
 
 const formatDuration = (seconds: number) => {
