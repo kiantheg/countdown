@@ -5,7 +5,7 @@ const GOOGLE_ROUTES_URL =
 const cache = new Map<string, { expiresAt: number; payload: unknown }>();
 const CACHE_TTL_MS = 60_000;
 
-const DESTINATION = "30 Riverside Blvd, New York, NY 10069";
+const DEFAULT_DESTINATION = "30 Riverside Blvd, New York, NY 10069";
 const ARRIVAL_BUFFER_SEC = 15 * 60;
 
 const formatDuration = (seconds: number) => {
@@ -20,6 +20,12 @@ const formatDuration = (seconds: number) => {
 export async function GET(request: NextRequest) {
   const arrivalTime = request.nextUrl.searchParams.get("arrivalTime");
   const arrivalTerminal = request.nextUrl.searchParams.get("arrivalTerminal");
+  const destinationParam = request.nextUrl.searchParams.get("destination");
+  const destination = destinationParam?.trim() || DEFAULT_DESTINATION;
+  const stops = request.nextUrl.searchParams
+    .getAll("stop")
+    .map((stop) => stop.trim())
+    .filter(Boolean);
   if (!arrivalTime) {
     return NextResponse.json(
       { error: "Provide arrivalTime to calculate drive ETA." },
@@ -48,7 +54,7 @@ export async function GET(request: NextRequest) {
     ? `John F Kennedy International Airport Terminal ${arrivalTerminal}`
     : "John F Kennedy International Airport Terminal 8";
 
-  const cacheKey = `${origin}|${DESTINATION}|${departureTime.toISOString()}`;
+  const cacheKey = `${origin}|${destination}|${stops.join("|")}|${departureTime.toISOString()}`;
   const cached = cache.get(cacheKey);
   if (cached && Date.now() < cached.expiresAt) {
     return NextResponse.json(cached.payload);
@@ -65,7 +71,8 @@ export async function GET(request: NextRequest) {
     },
     body: JSON.stringify({
       origin: { address: origin },
-      destination: { address: DESTINATION },
+      destination: { address: destination },
+      intermediates: stops.map((stop) => ({ address: stop })),
       travelMode: "DRIVE",
       routingPreference: "TRAFFIC_AWARE",
       departureTime: departureTime.toISOString(),
@@ -98,6 +105,7 @@ export async function GET(request: NextRequest) {
     );
   }
 
+  const routePoints = [origin, ...stops, destination];
   const mappedLegs = legs.map((leg: any, index: number) => {
     const duration = leg.duration;
     const durationSec = Number.parseInt(
@@ -107,8 +115,8 @@ export async function GET(request: NextRequest) {
     const distanceMeters = leg.distanceMeters ?? 0;
     const distanceMiles = distanceMeters / 1609.344;
     return {
-      from: index === 0 ? origin : "Unknown",
-      to: index === legs.length - 1 ? DESTINATION : "Unknown",
+      from: routePoints[index] ?? "Unknown",
+      to: routePoints[index + 1] ?? "Unknown",
       durationSec: Number.isNaN(durationSec) ? 0 : durationSec,
       durationText: formatDuration(
         Number.isNaN(durationSec) ? 0 : durationSec
@@ -130,7 +138,8 @@ export async function GET(request: NextRequest) {
   const responsePayload = {
     route: {
       origin,
-      destination: DESTINATION,
+      destination,
+      stops,
       departureTime: departureTime.toISOString(),
       arrivalTime: driveArrivalTime.toISOString(),
       bufferSec,

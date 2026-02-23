@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const AERODATABOX_BASE = "https://prod.api.market/api/v1/aedbx/aerodatabox";
+const RAPIDAPI_AERODATABOX_BASE = "https://aerodatabox.p.rapidapi.com";
+const RAPIDAPI_AERODATABOX_HOST = "aerodatabox.p.rapidapi.com";
 const cache = new Map<string, { expiresAt: number; payload: unknown }>();
 const CACHE_TTL_MS = 60_000;
 
@@ -20,31 +21,34 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  const apiKey = process.env.AERODATABOX_API_KEY;
-  if (!apiKey) {
+  const rapidApiKey = process.env.RAPIDAPI_KEY;
+  if (!rapidApiKey) {
     return NextResponse.json(
-      { error: "Missing AERODATABOX_API_KEY on the server." },
+      { error: "Missing RAPIDAPI_KEY on the server." },
       { status: 500 }
     );
   }
+  const rapidApiHost =
+    process.env.RAPIDAPI_AERODATABOX_HOST ?? RAPIDAPI_AERODATABOX_HOST;
 
   const cleaned = number.replace(/\s+/g, "").toUpperCase();
   const path = date
-    ? `/flights/Number/${encodeURIComponent(cleaned)}/${date}`
-    : `/flights/Number/${encodeURIComponent(cleaned)}`;
+    ? `/flights/number/${encodeURIComponent(cleaned)}/${date}`
+    : `/flights/number/${encodeURIComponent(cleaned)}`;
   const cacheKey = `${path}`;
   const cached = cache.get(cacheKey);
   if (cached && Date.now() < cached.expiresAt) {
     return NextResponse.json(cached.payload);
   }
 
-  const url = new URL(`${AERODATABOX_BASE}${path}`);
+  const url = new URL(`${RAPIDAPI_AERODATABOX_BASE}${path}`);
   url.searchParams.set("dateLocalRole", "Both");
 
   const response = await fetch(url.toString(), {
     cache: "no-store",
     headers: {
-      "x-api-market-key": apiKey,
+      "X-RapidAPI-Key": rapidApiKey,
+      "X-RapidAPI-Host": rapidApiHost,
       Accept: "application/json",
     },
   });
