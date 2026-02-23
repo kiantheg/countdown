@@ -5,9 +5,8 @@ const GOOGLE_ROUTES_URL =
 const cache = new Map<string, { expiresAt: number; payload: unknown }>();
 const CACHE_TTL_MS = 60_000;
 
-const WAYPOINT = "1256 West St, Hayward, CA";
-const DESTINATION = "Duan Family Hall, Stanford, CA 94305";
-const STOP_BUFFER_SEC = 15 * 60;
+const DESTINATION = "30 Riverside Blvd, New York, NY 10069";
+const ARRIVAL_BUFFER_SEC = 15 * 60;
 
 const formatDuration = (seconds: number) => {
   const totalMinutes = Math.round(seconds / 60);
@@ -44,12 +43,12 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  const departureTime = new Date(parsed.getTime() + 15 * 60 * 1000);
+  const departureTime = new Date(parsed.getTime() + ARRIVAL_BUFFER_SEC * 1000);
   const origin = arrivalTerminal
-    ? `San Francisco International Airport Terminal ${arrivalTerminal}`
-    : "San Francisco International Airport";
+    ? `John F Kennedy International Airport Terminal ${arrivalTerminal}`
+    : "John F Kennedy International Airport Terminal 8";
 
-  const cacheKey = `${origin}|${WAYPOINT}|${DESTINATION}|${departureTime.toISOString()}`;
+  const cacheKey = `${origin}|${DESTINATION}|${departureTime.toISOString()}`;
   const cached = cache.get(cacheKey);
   if (cached && Date.now() < cached.expiresAt) {
     return NextResponse.json(cached.payload);
@@ -67,7 +66,6 @@ export async function GET(request: NextRequest) {
     body: JSON.stringify({
       origin: { address: origin },
       destination: { address: DESTINATION },
-      intermediates: [{ address: WAYPOINT }],
       travelMode: "DRIVE",
       routingPreference: "TRAFFIC_AWARE",
       departureTime: departureTime.toISOString(),
@@ -100,11 +98,6 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  const legAddresses = [
-    { from: origin, to: WAYPOINT },
-    { from: WAYPOINT, to: DESTINATION },
-  ];
-
   const mappedLegs = legs.map((leg: any, index: number) => {
     const duration = leg.duration;
     const durationSec = Number.parseInt(
@@ -114,8 +107,8 @@ export async function GET(request: NextRequest) {
     const distanceMeters = leg.distanceMeters ?? 0;
     const distanceMiles = distanceMeters / 1609.344;
     return {
-      from: legAddresses[index]?.from ?? "Unknown",
-      to: legAddresses[index]?.to ?? "Unknown",
+      from: index === 0 ? origin : "Unknown",
+      to: index === legs.length - 1 ? DESTINATION : "Unknown",
       durationSec: Number.isNaN(durationSec) ? 0 : durationSec,
       durationText: formatDuration(
         Number.isNaN(durationSec) ? 0 : durationSec
@@ -128,9 +121,8 @@ export async function GET(request: NextRequest) {
     (sum: number, leg: { durationSec: number }) => sum + leg.durationSec,
     0
   );
-  const bufferStops = Math.max(0, mappedLegs.length - 1);
-  const bufferSec = bufferStops * STOP_BUFFER_SEC;
-  const totalDurationSec = baseDurationSec + bufferSec;
+  const bufferSec = ARRIVAL_BUFFER_SEC;
+  const totalDurationSec = baseDurationSec;
   const driveArrivalTime = new Date(
     departureTime.getTime() + totalDurationSec * 1000
   );
@@ -138,12 +130,10 @@ export async function GET(request: NextRequest) {
   const responsePayload = {
     route: {
       origin,
-      waypoint: WAYPOINT,
       destination: DESTINATION,
       departureTime: departureTime.toISOString(),
       arrivalTime: driveArrivalTime.toISOString(),
       bufferSec,
-      bufferStops,
       bufferText: bufferSec ? formatDuration(bufferSec) : "0 min",
       totalDurationSec,
       totalDurationText: formatDuration(totalDurationSec),

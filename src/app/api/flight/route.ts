@@ -15,7 +15,7 @@ export async function GET(request: NextRequest) {
   }
   if (date && !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
     return NextResponse.json(
-      { error: "Provide a flight date like 2025-02-12." },
+      { error: "Provide a flight date like 2026-03-05." },
       { status: 400 }
     );
   }
@@ -93,7 +93,7 @@ export async function GET(request: NextRequest) {
 
   const payload = {
     flight: {
-      airline: flight.airline?.name ?? "Delta Air Lines",
+      airline: flight.airline?.name ?? "American Airlines",
       flightNumber: flight.number ?? cleaned,
       status: flight.status ?? "Unknown",
       arrivalTime,

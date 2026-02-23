@@ -18,8 +18,8 @@ const syne = Syne({
 });
 
 export const metadata: Metadata = {
-  title: "Delta Arrival Countdown",
-  description: "Live countdown timer for Delta flight arrivals.",
+  title: "Becca NYC Trip Countdown",
+  description: "Live countdown and drive ETA for Becca's New York arrival.",
 };
 
 export default function RootLayout({
@@ -28,7 +28,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="bg-[#fff8f3]">
       <body
         className={`${spaceGrotesk.variable} ${geistMono.variable} ${syne.variable} antialiased`}
       >
