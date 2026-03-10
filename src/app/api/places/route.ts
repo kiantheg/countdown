@@ -5,6 +5,11 @@ const GOOGLE_PLACES_AUTOCOMPLETE_URL =
 const cache = new Map<string, { expiresAt: number; payload: unknown }>();
 const CACHE_TTL_MS = 30_000;
 
+type PlacesPrediction = {
+  place_id?: string;
+  description?: string;
+};
+
 export async function GET(request: NextRequest) {
   const query = request.nextUrl.searchParams.get("query")?.trim();
   if (!query || query.length < 2) {
@@ -54,7 +59,7 @@ export async function GET(request: NextRequest) {
   }
 
   const predictions = Array.isArray(payload.predictions)
-    ? payload.predictions.slice(0, 6).map((item: any) => ({
+    ? payload.predictions.slice(0, 6).map((item: PlacesPrediction) => ({
         placeId: item.place_id ?? "",
         description: item.description ?? "",
       }))

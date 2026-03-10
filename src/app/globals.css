@@ -1,17 +1,18 @@
 @import "tailwindcss";
 
 :root {
-  --background: #fff8f3;
-  --foreground: #2f2430;
-  --font-body: var(--font-space-grotesk);
-  --font-display: var(--font-syne);
+  --background: #07111f;
+  --foreground: #e2e8f0;
+  --font-body: "Avenir Next", "Trebuchet MS", sans-serif;
+  --font-display: "Arial Narrow", "Avenir Next Condensed", "Trebuchet MS", sans-serif;
+  --font-mono-custom: "SFMono-Regular", "Menlo", "Monaco", "Courier New", monospace;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-body);
-  --font-mono: var(--font-geist-mono);
+  --font-mono: var(--font-mono-custom);
 }
 
 body {
@@ -26,21 +27,21 @@ body {
 
 .brand-shell {
   background:
-    radial-gradient(1200px 700px at 10% -10%, rgba(252, 202, 174, 0.56), transparent 56%),
-    radial-gradient(900px 560px at 95% 10%, rgba(233, 215, 197, 0.52), transparent 62%),
-    linear-gradient(145deg, #fef7f0 0%, #fffbf7 52%, #f8efe6 100%);
+    radial-gradient(1200px 700px at 10% -10%, rgba(37, 99, 235, 0.28), transparent 56%),
+    radial-gradient(900px 560px at 95% 10%, rgba(14, 165, 233, 0.18), transparent 62%),
+    linear-gradient(145deg, #07111f 0%, #0b1728 52%, #06101d 100%);
 }
 
 .fabric-texture {
   background-image:
     repeating-linear-gradient(
       120deg,
-      rgba(128, 92, 72, 0.035) 0 1px,
+      rgba(96, 165, 250, 0.05) 0 1px,
       transparent 1px 18px
     ),
     repeating-linear-gradient(
       30deg,
-      rgba(165, 129, 104, 0.03) 0 1px,
+      rgba(148, 163, 184, 0.035) 0 1px,
       transparent 1px 22px
     );
 }
@@ -54,21 +55,21 @@ body {
 }
 
 .soft-panel {
-  border: 1px solid #d9c0ad;
-  background: linear-gradient(180deg, rgba(255, 252, 248, 0.97), rgba(254, 246, 238, 0.95));
+  border: 1px solid rgba(51, 65, 85, 0.9);
+  background: linear-gradient(180deg, rgba(10, 18, 32, 0.94), rgba(8, 15, 27, 0.9));
   box-shadow:
-    0 12px 30px rgba(98, 70, 53, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.85);
+    0 12px 30px rgba(2, 6, 23, 0.45),
+    inset 0 1px 0 rgba(125, 211, 252, 0.08);
   backdrop-filter: blur(10px);
   transition: transform 260ms ease, box-shadow 260ms ease, border-color 260ms ease;
 }
 
 .soft-panel:hover {
   transform: translateY(-3px);
-  border-color: #caa48d;
+  border-color: rgba(14, 165, 233, 0.55);
   box-shadow:
-    0 16px 36px rgba(98, 70, 53, 0.14),
-    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    0 16px 36px rgba(2, 6, 23, 0.55),
+    inset 0 1px 0 rgba(125, 211, 252, 0.12);
 }
 
 .reveal {
@@ -88,15 +89,15 @@ body {
 }
 
 .top-rail {
-  border: 1px solid #d9c0ad;
-  background: linear-gradient(90deg, rgba(253, 232, 217, 0.96), rgba(248, 239, 230, 0.96));
-  box-shadow: 0 8px 24px rgba(98, 70, 53, 0.1);
+  border: 1px solid rgba(51, 65, 85, 0.9);
+  background: linear-gradient(90deg, rgba(10, 18, 32, 0.92), rgba(12, 22, 40, 0.94));
+  box-shadow: 0 8px 24px rgba(2, 6, 23, 0.35);
 }
 
 .divider-thread {
   height: 1px;
   width: 100%;
-  background: linear-gradient(90deg, transparent, #c8a796 18%, #e5cbbc 50%, #c8a796 82%, transparent);
+  background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.18) 18%, rgba(125, 211, 252, 0.5) 50%, rgba(56, 189, 248, 0.18) 82%, transparent);
   opacity: 0.85;
 }
 
@@ -110,15 +111,15 @@ body {
   left: 14px;
   right: 14px;
   top: 10px;
-  border-top: 1px dashed rgba(131, 95, 72, 0.38);
+  border-top: 1px dashed rgba(125, 211, 252, 0.22);
 }
 
 .count-tile {
-  border: 1px solid #e0c7b2;
-  background: rgba(255, 248, 241, 0.95);
+  border: 1px solid rgba(51, 65, 85, 0.95);
+  background: rgba(10, 18, 32, 0.88);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.8),
-    0 5px 14px rgba(106, 72, 47, 0.08);
+    inset 0 1px 0 rgba(125, 211, 252, 0.08),
+    0 5px 14px rgba(2, 6, 23, 0.28);
   animation: breathe 3.6s ease-in-out infinite;
 }
 
@@ -143,7 +144,7 @@ body {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(115deg, transparent 30%, rgba(255, 255, 255, 0.45), transparent 70%);
+  background: linear-gradient(115deg, transparent 30%, rgba(255, 255, 255, 0.25), transparent 70%);
   transform: translateX(-120%);
   transition: transform 500ms ease;
 }
@@ -153,9 +154,9 @@ body {
 }
 
 .lookbook-note {
-  border: 1px solid #e2cdbc;
-  background: linear-gradient(180deg, #fff8f2, #fff3ea);
-  box-shadow: 0 8px 18px rgba(99, 67, 45, 0.08);
+  border: 1px solid rgba(51, 65, 85, 0.95);
+  background: linear-gradient(180deg, rgba(10, 18, 32, 0.92), rgba(8, 15, 27, 0.9));
+  box-shadow: 0 8px 18px rgba(2, 6, 23, 0.3);
 }
 
 .ticker {

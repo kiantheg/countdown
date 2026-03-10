@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 type FlightInfo = {
   airline: string;
@@ -56,16 +56,17 @@ type PlacePrediction = {
   description: string;
 };
 
-const DEFAULT_FLIGHT_NUMBER = "AA166";
-const DEFAULT_DESTINATION = "30 Riverside Blvd, New York, NY 10069";
-const DRIVE_TIMEZONE = "America/New_York";
+const DEFAULT_FLIGHT_NUMBER = "AA76";
+const DEFAULT_DESTINATION = "1256 West Street, Hayward, CA 94545";
+const DRIVE_TIMEZONE = "America/Los_Angeles";
+const DEFAULT_ORIGIN_LABEL = "SFO American Airlines Terminal";
 
-const getNextMarch5 = () => {
+const getNextApril2 = () => {
   const today = new Date();
   const year = today.getFullYear();
-  const candidate = new Date(`${year}-03-05T00:00:00`);
+  const candidate = new Date(`${year}-04-02T00:00:00`);
   const nextYear = year + 1;
-  return (today > candidate ? nextYear : year).toString() + "-03-05";
+  return (today > candidate ? nextYear : year).toString() + "-04-02";
 };
 
 const formatCountdown = (ms: number) => {
@@ -99,7 +100,7 @@ const formatSlot = (value: number) => String(value).padStart(2, "0");
 
 export default function Home() {
   const [query, setQuery] = useState(DEFAULT_FLIGHT_NUMBER);
-  const [dateQuery, setDateQuery] = useState(getNextMarch5());
+  const [dateQuery, setDateQuery] = useState(getNextApril2());
   const [flight, setFlight] = useState<FlightInfo | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -129,7 +130,7 @@ export default function Home() {
         return;
       }
       setFlight(payload.flight);
-    } catch (err) {
+    } catch {
       setFlight(null);
       setError("Network error while loading flight status.");
     } finally {
@@ -138,7 +139,7 @@ export default function Home() {
   };
 
   useEffect(() => {
-    fetchFlight(DEFAULT_FLIGHT_NUMBER, getNextMarch5());
+    fetchFlight(DEFAULT_FLIGHT_NUMBER, getNextApril2());
   }, []);
 
   useEffect(() => {
@@ -170,7 +171,7 @@ export default function Home() {
 
   const driveStartTime = flight?.arrivalTime ?? flight?.scheduledArrivalTime;
 
-  const fetchDrive = async () => {
+  const fetchDrive = useCallback(async () => {
     if (!driveStartTime) {
       setDrive(null);
       setDriveError(null);
@@ -185,6 +186,12 @@ export default function Home() {
         arrivalTime: driveStartTime,
         destination: destination.trim() || DEFAULT_DESTINATION,
       });
+      if (flight?.arrivalAirport) {
+        params.set("arrivalAirport", flight.arrivalAirport);
+      }
+      if (flight?.arrivalIata) {
+        params.set("arrivalIata", flight.arrivalIata);
+      }
       if (flight?.terminal) {
         params.set("arrivalTerminal", flight.terminal);
       }
@@ -200,17 +207,24 @@ export default function Home() {
         return;
       }
       setDrive(payload.route);
-    } catch (err) {
+    } catch {
       setDrive(null);
       setDriveError("Network error while loading drive ETA.");
     } finally {
       setDriveLoading(false);
     }
-  };
+  }, [
+    destination,
+    driveStartTime,
+    flight?.arrivalAirport,
+    flight?.arrivalIata,
+    flight?.terminal,
+    stops,
+  ]);
 
   useEffect(() => {
     fetchDrive();
-  }, [driveStartTime, flight?.terminal]);
+  }, [fetchDrive]);
 
   useEffect(() => {
     const onPointerDown = (event: MouseEvent) => {
@@ -273,8 +287,8 @@ export default function Home() {
   const countdown = remainingMs !== null ? formatCountdown(remainingMs) : null;
 
   const statusTone = isLanded
-    ? "bg-emerald-100 text-emerald-800"
-    : "bg-amber-100 text-amber-800";
+    ? "bg-emerald-500/15 text-emerald-200 ring-1 ring-emerald-400/30"
+    : "bg-sky-500/15 text-sky-200 ring-1 ring-sky-400/30";
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -314,15 +328,19 @@ export default function Home() {
     setActivePlaceField(null);
   };
 
+  const routeTitle = `${drive?.origin ?? DEFAULT_ORIGIN_LABEL} \u2192 ${
+    drive?.destination ?? DEFAULT_DESTINATION
+  }`;
+
   return (
-    <div className="brand-shell relative min-h-screen overflow-hidden text-[#3b2e28]">
+    <div className="brand-shell relative min-h-screen overflow-hidden text-slate-100">
       <div
         aria-hidden
-        className="ambient-orb pointer-events-none absolute left-0 top-0 h-96 w-96 -translate-x-1/3 -translate-y-1/3 rounded-full bg-[#ffd7c9]/60 blur-[140px]"
+        className="ambient-orb pointer-events-none absolute left-0 top-0 h-96 w-96 -translate-x-1/3 -translate-y-1/3 rounded-full bg-[#1d4ed8]/30 blur-[140px]"
       />
       <div
         aria-hidden
-        className="ambient-orb ambient-orb-delayed pointer-events-none absolute bottom-0 right-0 h-[420px] w-[420px] translate-x-1/4 translate-y-1/3 rounded-full bg-[#c8e8ff]/55 blur-[160px]"
+        className="ambient-orb ambient-orb-delayed pointer-events-none absolute bottom-0 right-0 h-[420px] w-[420px] translate-x-1/4 translate-y-1/3 rounded-full bg-[#38bdf8]/20 blur-[160px]"
       />
       <div
         aria-hidden
@@ -330,22 +348,22 @@ export default function Home() {
       />
 
       <main className="relative mx-auto flex min-h-screen w-full max-w-6xl flex-col gap-7 px-6 py-10 sm:px-10 sm:py-12 lg:grid lg:grid-cols-[1.06fr_0.94fr] lg:gap-8 lg:py-14">
-        <section className="top-rail reveal flex items-center justify-between rounded-full px-5 py-3 text-[11px] uppercase tracking-[0.24em] text-[#6c4f58] lg:col-span-2">
-          <span>Becca x Kian • NYC Visit</span>
-          <span>Spring Arrival Edit</span>
+        <section className="top-rail reveal flex items-center justify-between rounded-full px-5 py-3 text-[11px] uppercase tracking-[0.24em] text-sky-100 lg:col-span-2">
+          <span>Kian x Becca • Stanford Visit</span>
+          <span>April 2 arrival</span>
         </section>
         <section className="reveal flex flex-col gap-6">
-          <div className="inline-flex w-fit items-center gap-2 rounded-full border border-[#ddbea8] bg-[#fff0e2] px-4 py-2 text-xs font-semibold uppercase tracking-[0.25em] text-[#7a4f3f] shadow-sm">
-            Becca visits NYC
+          <div className="inline-flex w-fit items-center gap-2 rounded-full border border-sky-500/35 bg-sky-500/12 px-4 py-2 text-xs font-semibold uppercase tracking-[0.25em] text-sky-200 shadow-sm">
+            Kian visits Becca
           </div>
           <div className="space-y-4">
-            <h1 className="font-display text-4xl font-semibold uppercase tracking-tight text-[#4b3529] sm:text-5xl lg:text-6xl">
-              Countdown to New York.
+            <h1 className="font-display text-4xl font-semibold uppercase tracking-tight text-white sm:text-5xl lg:text-6xl">
+              Kian visits Becca at Stanford.
             </h1>
-            <p className="max-w-lg text-base text-[#6a5146] sm:text-lg">
-              Tracking American Airlines {DEFAULT_FLIGHT_NUMBER} from SFO to JFK
-              on March 5. Live arrival estimates update as the flight status
-              changes.
+            <p className="max-w-lg text-base text-slate-300 sm:text-lg">
+              Tracking American Airlines {DEFAULT_FLIGHT_NUMBER} from JFK to SFO
+              on April 2 at 6:00 AM. Live arrival estimates update as the
+              flight status changes.
             </p>
           </div>
           <div className="divider-thread" />
@@ -354,7 +372,7 @@ export default function Home() {
             onSubmit={onSubmit}
             className="soft-panel flex flex-col gap-4 rounded-3xl p-6"
           >
-            <label className="text-sm font-semibold uppercase tracking-[0.2em] text-[#7f5a4a]">
+            <label className="text-sm font-semibold uppercase tracking-[0.2em] text-sky-200">
               Flight details
             </label>
             <div className="grid gap-3 sm:grid-cols-[minmax(0,1fr)_minmax(0,0.75fr)_auto]">
@@ -362,27 +380,27 @@ export default function Home() {
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}
                 placeholder={DEFAULT_FLIGHT_NUMBER}
-                className="h-12 rounded-full border border-[#d7bda8] bg-[#fff9f3] px-5 text-base font-medium text-[#543d31] outline-none transition focus:border-[#c98163] focus:ring-2 focus:ring-[#edc8b5]"
+                className="h-12 rounded-full border border-slate-700 bg-slate-950/80 px-5 text-base font-medium text-slate-100 outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-500/30"
               />
               <input
                 type="date"
                 value={dateQuery}
                 onChange={(event) => setDateQuery(event.target.value)}
-                className="h-12 rounded-full border border-[#d7bda8] bg-[#fff9f3] px-5 text-base font-medium text-[#543d31] outline-none transition focus:border-[#c98163] focus:ring-2 focus:ring-[#edc8b5]"
+                className="h-12 rounded-full border border-slate-700 bg-slate-950/80 px-5 text-base font-medium text-slate-100 outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-500/30"
               />
               <button
                 type="submit"
                 disabled={loading}
-                className="brand-cta h-12 min-w-[122px] whitespace-nowrap rounded-full bg-[#e5a989] px-6 text-sm font-semibold uppercase tracking-[0.2em] text-[#4d3428] transition hover:bg-[#db9a78] disabled:cursor-not-allowed disabled:opacity-70"
+                className="brand-cta h-12 min-w-[122px] whitespace-nowrap rounded-full bg-sky-500 px-6 text-sm font-semibold uppercase tracking-[0.2em] text-slate-950 transition hover:bg-sky-400 disabled:cursor-not-allowed disabled:opacity-70"
               >
                 {loading ? "Tracking" : "Update"}
               </button>
             </div>
-            <div className="flex flex-wrap items-center gap-3 text-xs text-[#73584b]">
-              <span className="rounded-full bg-[#f4dfd0] px-3 py-1">
-                Default: AA166 on Mar 5
+            <div className="flex flex-wrap items-center gap-3 text-xs text-slate-300">
+              <span className="rounded-full bg-slate-900/80 px-3 py-1">
+                Default: AA76 on Apr 2 at 6:00 AM
               </span>
-              <span className="rounded-full bg-[#efe2d3] px-3 py-1">
+              <span className="rounded-full bg-slate-900/80 px-3 py-1">
                 Powered by AeroDataBox
               </span>
             </div>
@@ -393,12 +411,12 @@ export default function Home() {
             ) : null}
           </form>
 
-          <div className="lookbook-note reveal-delay-1 rounded-3xl p-6 text-sm text-[#6f5649]">
-            <p className="font-medium text-[#4f382d]">
-              Becca's trip is set for SFO to JFK on March 5.
+          <div className="lookbook-note reveal-delay-1 rounded-3xl p-6 text-sm text-slate-300">
+            <p className="font-medium text-white">
+              Kian&apos;s trip is set for JFK to SFO on April 2.
             </p>
             <p className="mt-3">
-              We will show the best live estimate available until touchdown.
+              The route updates from the SFO American Airlines terminal to Hayward once we have the latest arrival estimate.
             </p>
           </div>
         </section>
@@ -406,10 +424,10 @@ export default function Home() {
         <section className="soft-panel stitch-line reveal reveal-delay-1 flex flex-col gap-6 rounded-[32px] p-7">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[#7f5a4a]">
+              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-sky-200">
                 Arrival clock
               </p>
-              <h2 className="font-display text-2xl font-semibold text-[#4f382d]">
+              <h2 className="font-display text-2xl font-semibold text-white">
                 {flight
                   ? `${flight.airline} ${flight.flightNumber}`
                   : "Awaiting flight"}
@@ -424,7 +442,7 @@ export default function Home() {
             ) : null}
           </div>
 
-          <div className="grid grid-cols-4 gap-3 rounded-3xl border border-[#e3c7b2] bg-[#fff1e5] px-5 py-6 text-[#4f382d]">
+          <div className="grid grid-cols-4 gap-3 rounded-3xl border border-slate-800 bg-slate-950/75 px-5 py-6 text-white">
             {countdown ? (
               [
                 ["Days", countdown.days],
@@ -439,83 +457,83 @@ export default function Home() {
                   <span className="font-display text-2xl sm:text-3xl">
                     {formatSlot(value as number)}
                   </span>
-                  <span className="text-[10px] uppercase tracking-[0.2em] text-[#7f5a4a]">
+                  <span className="text-[10px] uppercase tracking-[0.2em] text-sky-200">
                     {label}
                   </span>
                 </div>
               ))
             ) : (
-              <div className="col-span-4 text-center text-sm text-[#7f5a4a]">
+              <div className="col-span-4 text-center text-sm text-slate-300">
                 Enter a flight number to start the countdown.
               </div>
             )}
           </div>
 
           <div className="space-y-4">
-            <div className="rounded-2xl border border-[#d7bda8] bg-[#fff8f1] px-4 py-3 text-sm text-[#6f5649]">
+            <div className="rounded-2xl border border-slate-800 bg-slate-950/70 px-4 py-3 text-sm text-slate-300">
               {flight && arrivalDate ? (
                 <div className="flex flex-col gap-1">
-                  <span className="text-xs uppercase tracking-[0.2em] text-[#7f5a4a]">
+                  <span className="text-xs uppercase tracking-[0.2em] text-sky-200">
                     Estimated arrival
                   </span>
-                  <span className="text-lg font-semibold text-[#4f382d]">
+                  <span className="text-lg font-semibold text-white">
                     {formatTime(arrivalDate, flight.arrivalTimezone)}
                   </span>
-                  <span className="text-xs text-[#7f5a4a]">
+                  <span className="text-xs text-slate-400">
                     {flight.arrivalAirport
                       ? `${flight.arrivalAirport} (${flight.arrivalIata ?? ""})`
                       : "Arrival airport pending"}
                   </span>
                 </div>
               ) : (
-                <div className="text-sm text-[#7f5a4a]">
+                <div className="text-sm text-slate-300">
                   Live arrival time will appear here once we find the flight.
                 </div>
               )}
             </div>
 
-            <div className="grid grid-cols-2 gap-3 text-xs text-[#73584b]">
-              <div className="rounded-2xl border border-[#d7bda8] bg-[#fffaf5]/95 px-4 py-3">
-                <p className="text-[10px] uppercase tracking-[0.2em] text-[#7f5a4a]">
+            <div className="grid grid-cols-2 gap-3 text-xs text-slate-300">
+              <div className="rounded-2xl border border-slate-800 bg-slate-950/70 px-4 py-3">
+                <p className="text-[10px] uppercase tracking-[0.2em] text-sky-200">
                   Departure
                 </p>
-                <p className="mt-2 text-sm font-semibold text-[#4f382d]">
+                <p className="mt-2 text-sm font-semibold text-white">
                   {flight?.departureAirport
                     ? `${flight.departureAirport} (${flight.departureIata ?? ""})`
                     : "-"}
                 </p>
               </div>
-              <div className="rounded-2xl border border-[#d7bda8] bg-[#fffaf5]/95 px-4 py-3">
-                <p className="text-[10px] uppercase tracking-[0.2em] text-[#7f5a4a]">
+              <div className="rounded-2xl border border-slate-800 bg-slate-950/70 px-4 py-3">
+                <p className="text-[10px] uppercase tracking-[0.2em] text-sky-200">
                   Arrival airport
                 </p>
-                <p className="mt-2 text-sm font-semibold text-[#4f382d]">
+                <p className="mt-2 text-sm font-semibold text-white">
                   {flight?.arrivalAirport
                     ? `${flight.arrivalAirport} (${flight.arrivalIata ?? ""})`
                     : "-"}
                 </p>
               </div>
-              <div className="rounded-2xl border border-[#d7bda8] bg-[#fffaf5]/95 px-4 py-3">
-                <p className="text-[10px] uppercase tracking-[0.2em] text-[#7f5a4a]">
+              <div className="rounded-2xl border border-slate-800 bg-slate-950/70 px-4 py-3">
+                <p className="text-[10px] uppercase tracking-[0.2em] text-sky-200">
                   Arrival terminal
                 </p>
-                <p className="mt-2 text-sm font-semibold text-[#4f382d]">
+                <p className="mt-2 text-sm font-semibold text-white">
                   {flight?.terminal || "-"}
                 </p>
               </div>
-              <div className="rounded-2xl border border-[#d7bda8] bg-[#fffaf5]/95 px-4 py-3">
-                <p className="text-[10px] uppercase tracking-[0.2em] text-[#7f5a4a]">
+              <div className="rounded-2xl border border-slate-800 bg-slate-950/70 px-4 py-3">
+                <p className="text-[10px] uppercase tracking-[0.2em] text-sky-200">
                   Arrival gate
                 </p>
-                <p className="mt-2 text-sm font-semibold text-[#4f382d]">
+                <p className="mt-2 text-sm font-semibold text-white">
                   {flight?.gate || "-"}
                 </p>
               </div>
-              <div className="rounded-2xl border border-[#d7bda8] bg-[#fffaf5]/95 px-4 py-3">
-                <p className="text-[10px] uppercase tracking-[0.2em] text-[#7f5a4a]">
+              <div className="rounded-2xl border border-slate-800 bg-slate-950/70 px-4 py-3">
+                <p className="text-[10px] uppercase tracking-[0.2em] text-sky-200">
                   Scheduled departure
                 </p>
-                <p className="mt-2 text-sm font-semibold text-[#4f382d]">
+                <p className="mt-2 text-sm font-semibold text-white">
                   {scheduledDepartureDate
                     ? formatTime(
                         scheduledDepartureDate,
@@ -524,11 +542,11 @@ export default function Home() {
                     : "-"}
                 </p>
               </div>
-              <div className="rounded-2xl border border-[#d7bda8] bg-[#fffaf5]/95 px-4 py-3">
-                <p className="text-[10px] uppercase tracking-[0.2em] text-[#7f5a4a]">
+              <div className="rounded-2xl border border-slate-800 bg-slate-950/70 px-4 py-3">
+                <p className="text-[10px] uppercase tracking-[0.2em] text-sky-200">
                   Scheduled arrival
                 </p>
-                <p className="mt-2 text-sm font-semibold text-[#4f382d]">
+                <p className="mt-2 text-sm font-semibold text-white">
                   {scheduledArrivalDate
                     ? formatTime(
                         scheduledArrivalDate,
@@ -539,7 +557,7 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="text-xs text-[#7f5a4a]">
+            <div className="text-xs text-slate-400">
               {flight?.updatedAt
                 ? `Last update: ${new Date(flight.updatedAt).toLocaleString()}`
                 : ""}
@@ -551,25 +569,25 @@ export default function Home() {
         <section className="soft-panel stitch-line reveal reveal-delay-2 flex flex-col gap-6 rounded-[32px] p-7 lg:col-span-2">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[#7f5a4a]">
+              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-sky-200">
                 Drive ETA
               </p>
-              <h3 className="font-display text-2xl font-semibold text-[#4f382d]">
-                JFK Terminal 8 → 30 Riverside Blvd
+              <h3 className="font-display text-2xl font-semibold text-white">
+                {routeTitle}
               </h3>
             </div>
-            <span className="rounded-full border border-[#ddbea8] bg-[#fff0e2] px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-[#7a4f3f]">
+            <span className="rounded-full border border-sky-500/35 bg-sky-500/12 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-sky-200">
               Arrival + 15 min
             </span>
           </div>
           <form
             ref={routeFormRef}
             onSubmit={onRouteSubmit}
-            className="rounded-2xl border border-[#d7bda8] bg-[#fff8f1] p-4"
+            className="rounded-2xl border border-slate-800 bg-slate-950/70 p-4"
           >
             <div className="grid gap-3 sm:grid-cols-[1fr_auto]">
               <div className="relative">
-                <label className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#7f5a4a]">
+                <label className="text-[10px] font-semibold uppercase tracking-[0.2em] text-sky-200">
                   Destination
                 </label>
                 <input
@@ -580,13 +598,13 @@ export default function Home() {
                     setActivePlaceField("destination");
                   }}
                   placeholder={DEFAULT_DESTINATION}
-                  className="mt-2 h-11 w-full rounded-xl border border-[#d7bda8] bg-[#fffdf9] px-4 text-sm font-medium text-[#543d31] outline-none transition focus:border-[#c98163] focus:ring-2 focus:ring-[#edc8b5]"
+                  className="mt-2 h-11 w-full rounded-xl border border-slate-700 bg-slate-900 px-4 text-sm font-medium text-slate-100 outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-500/30"
                 />
                 {activePlaceField === "destination" &&
                 (placePredictions.length > 0 || placeLoading) ? (
-                  <div className="absolute z-20 mt-1 max-h-56 w-full overflow-auto rounded-xl border border-[#d7bda8] bg-[#fffdf9] p-1 shadow-lg">
+                  <div className="absolute z-20 mt-1 max-h-56 w-full overflow-auto rounded-xl border border-slate-700 bg-slate-900 p-1 shadow-lg">
                     {placeLoading ? (
-                      <div className="px-3 py-2 text-xs text-[#7f5a4a]">
+                      <div className="px-3 py-2 text-xs text-slate-300">
                         Searching places...
                       </div>
                     ) : (
@@ -598,7 +616,7 @@ export default function Home() {
                             event.preventDefault();
                             applyPlacePrediction(prediction);
                           }}
-                          className="block w-full rounded-lg px-3 py-2 text-left text-xs text-[#543d31] transition hover:bg-[#fdf0e6]"
+                          className="block w-full rounded-lg px-3 py-2 text-left text-xs text-slate-100 transition hover:bg-sky-500/10"
                         >
                           {prediction.description}
                         </button>
@@ -610,20 +628,20 @@ export default function Home() {
               <button
                 type="submit"
                 disabled={driveLoading}
-                className="brand-cta h-11 self-end rounded-xl bg-[#e5a989] px-5 text-xs font-semibold uppercase tracking-[0.2em] text-[#4d3428] transition hover:bg-[#db9a78] disabled:cursor-not-allowed disabled:opacity-70"
+                className="brand-cta h-11 self-end rounded-xl bg-sky-500 px-5 text-xs font-semibold uppercase tracking-[0.2em] text-slate-950 transition hover:bg-sky-400 disabled:cursor-not-allowed disabled:opacity-70"
               >
                 {driveLoading ? "Updating" : "Update route"}
               </button>
             </div>
             <div className="mt-4 space-y-3">
               <div className="flex items-center justify-between">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#7f5a4a]">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-sky-200">
                   Optional stops
                 </p>
                 <button
                   type="button"
                   onClick={addStop}
-                  className="rounded-lg border border-[#d7bda8] bg-[#fff1e5] px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.15em] text-[#7a4f3f] transition hover:bg-[#fde7d8]"
+                  className="rounded-lg border border-slate-700 bg-slate-900 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.15em] text-sky-200 transition hover:bg-sky-500/10"
                 >
                   Add stop
                 </button>
@@ -641,13 +659,13 @@ export default function Home() {
                           setActivePlaceField(`stop-${index}`);
                         }}
                         placeholder={`Stop ${index + 1} address`}
-                        className="h-10 w-full rounded-xl border border-[#d7bda8] bg-[#fffdf9] px-4 text-sm text-[#543d31] outline-none transition focus:border-[#c98163] focus:ring-2 focus:ring-[#edc8b5]"
+                        className="h-10 w-full rounded-xl border border-slate-700 bg-slate-900 px-4 text-sm text-slate-100 outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-500/30"
                       />
                       {activePlaceField === `stop-${index}` &&
                       (placePredictions.length > 0 || placeLoading) ? (
-                        <div className="absolute z-20 mt-1 max-h-56 w-full overflow-auto rounded-xl border border-[#d7bda8] bg-[#fffdf9] p-1 shadow-lg">
+                        <div className="absolute z-20 mt-1 max-h-56 w-full overflow-auto rounded-xl border border-slate-700 bg-slate-900 p-1 shadow-lg">
                           {placeLoading ? (
-                            <div className="px-3 py-2 text-xs text-[#7f5a4a]">
+                            <div className="px-3 py-2 text-xs text-slate-300">
                               Searching places...
                             </div>
                           ) : (
@@ -659,7 +677,7 @@ export default function Home() {
                                   event.preventDefault();
                                   applyPlacePrediction(prediction);
                                 }}
-                                className="block w-full rounded-lg px-3 py-2 text-left text-xs text-[#543d31] transition hover:bg-[#fdf0e6]"
+                                className="block w-full rounded-lg px-3 py-2 text-left text-xs text-slate-100 transition hover:bg-sky-500/10"
                               >
                                 {prediction.description}
                               </button>
@@ -671,7 +689,7 @@ export default function Home() {
                       <button
                         type="button"
                         onClick={() => removeStop(index)}
-                        className="rounded-xl border border-[#d7bda8] bg-white px-4 text-[10px] font-semibold uppercase tracking-[0.15em] text-[#7a4f3f] transition hover:bg-[#fdf0e6]"
+                        className="rounded-xl border border-slate-700 bg-slate-900 px-4 text-[10px] font-semibold uppercase tracking-[0.15em] text-sky-200 transition hover:bg-sky-500/10"
                       >
                         Remove
                       </button>
@@ -679,16 +697,16 @@ export default function Home() {
                   ))}
                 </div>
               ) : (
-                <p className="text-xs text-[#7f5a4a]">
-                  No stops added. Route goes directly from JFK Terminal 8 to 30
-                  Riverside Blvd.
+                <p className="text-xs text-slate-300">
+                  No stops added. Route goes directly from {DEFAULT_ORIGIN_LABEL}{" "}
+                  to 1256 West Street.
                 </p>
               )}
             </div>
           </form>
 
           {driveLoading ? (
-            <div className="rounded-2xl border border-[#d7bda8] bg-[#fff8f1] px-4 py-3 text-sm text-[#7f5a4a]">
+            <div className="rounded-2xl border border-slate-800 bg-slate-950/70 px-4 py-3 text-sm text-slate-300">
               Calculating drive ETA...
             </div>
           ) : driveError ? (
@@ -697,17 +715,17 @@ export default function Home() {
             </div>
           ) : drive ? (
             <div className="grid gap-4 lg:grid-cols-[1.1fr_0.9fr]">
-              <div className="rounded-2xl border border-[#d7bda8] bg-[#fff8f1] px-4 py-4 text-sm text-[#6f5649]">
-                <p className="text-xs uppercase tracking-[0.2em] text-[#7f5a4a]">
-                  Estimated arrival in Manhattan
+              <div className="rounded-2xl border border-slate-800 bg-slate-950/70 px-4 py-4 text-sm text-slate-300">
+                <p className="text-xs uppercase tracking-[0.2em] text-sky-200">
+                  Estimated arrival in Hayward
                 </p>
-                <p className="mt-2 text-2xl font-semibold text-[#4f382d]">
+                <p className="mt-2 text-2xl font-semibold text-white">
                   {formatTime(new Date(drive.arrivalTime), DRIVE_TIMEZONE)}
                 </p>
-                <p className="mt-2 text-xs text-[#7f5a4a]">
+                <p className="mt-2 text-xs text-slate-400">
                   Total drive time: {drive.totalDurationText}
                 </p>
-                <p className="mt-1 text-xs text-[#7f5a4a]">
+                <p className="mt-1 text-xs text-slate-400">
                   Includes a {drive.bufferText} post-arrival buffer before
                   departure.
                 </p>
@@ -716,22 +734,22 @@ export default function Home() {
                 {drive.legs.map((leg, index) => (
                   <div
                     key={`${leg.from}-${index}`}
-                    className="rounded-2xl border border-[#d7bda8] bg-[#fffaf5]/95 px-4 py-3 text-xs text-[#73584b]"
+                    className="rounded-2xl border border-slate-800 bg-slate-950/70 px-4 py-3 text-xs text-slate-300"
                   >
-                    <p className="text-[10px] uppercase tracking-[0.2em] text-[#7f5a4a]">
+                    <p className="text-[10px] uppercase tracking-[0.2em] text-sky-200">
                       Leg {index + 1}
                     </p>
-                    <p className="mt-2 text-sm font-semibold text-[#4f382d]">
+                    <p className="mt-2 text-sm font-semibold text-white">
                       {leg.durationText} · {leg.distanceText}
                     </p>
-                    <p className="mt-1 text-xs text-[#7f5a4a]">
+                    <p className="mt-1 text-xs text-slate-400">
                       {leg.from} → {leg.to}
                     </p>
                   </div>
                 ))}
               </div>
               <div className="lg:col-span-2">
-                <div className="rounded-2xl border border-[#d7bda8] bg-[#fff8f1] p-3">
+                <div className="rounded-2xl border border-slate-800 bg-slate-950/70 p-3">
                   {process.env.NEXT_PUBLIC_GOOGLE_MAPS_EMBED_KEY ? (
                     <iframe
                       title="Drive route map"
@@ -751,7 +769,7 @@ export default function Home() {
                       }&mode=driving`}
                     />
                   ) : (
-                    <div className="rounded-xl bg-[#fffaf5]/95 px-4 py-6 text-sm text-[#7f5a4a]">
+                    <div className="rounded-xl bg-slate-900 px-4 py-6 text-sm text-slate-300">
                       Map preview requires a Google Maps Embed API key.
                     </div>
                   )}
@@ -759,20 +777,20 @@ export default function Home() {
               </div>
             </div>
           ) : (
-            <div className="rounded-2xl border border-[#d7bda8] bg-[#fff8f1] px-4 py-3 text-sm text-[#7f5a4a]">
+            <div className="rounded-2xl border border-slate-800 bg-slate-950/70 px-4 py-3 text-sm text-slate-300">
               Drive ETA will appear once we have a flight arrival time.
             </div>
           )}
         </section>
-        <section className="soft-panel reveal reveal-delay-3 overflow-hidden rounded-[32px] px-0 py-3 text-xs uppercase tracking-[0.18em] text-[#7f5a4a] lg:col-span-2">
+        <section className="soft-panel reveal reveal-delay-3 overflow-hidden rounded-[32px] px-0 py-3 text-xs uppercase tracking-[0.18em] text-sky-200 lg:col-span-2">
           <div className="ticker flex gap-10 px-6">
-            <span>New York arrival countdown</span>
-            <span>American Airlines AA166</span>
-            <span>JFK Terminal 8 to 30 Riverside Blvd</span>
-            <span>Soft timing buffer plus live ETA</span>
-            <span>New York arrival countdown</span>
-            <span>American Airlines AA166</span>
-            <span>JFK Terminal 8 to 30 Riverside Blvd</span>
+            <span>Stanford visit countdown</span>
+            <span>American Airlines AA76</span>
+            <span>JFK to SFO on April 2</span>
+            <span>SFO American Airlines terminal to Hayward</span>
+            <span>Stanford visit countdown</span>
+            <span>American Airlines AA76</span>
+            <span>SFO American Airlines terminal to 1256 West Street</span>
           </div>
         </section>
       </main>

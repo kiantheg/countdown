@@ -5,8 +5,39 @@ const GOOGLE_ROUTES_URL =
 const cache = new Map<string, { expiresAt: number; payload: unknown }>();
 const CACHE_TTL_MS = 60_000;
 
-const DEFAULT_DESTINATION = "30 Riverside Blvd, New York, NY 10069";
+type RouteLeg = {
+  duration?: string;
+  distanceMeters?: number;
+};
+
+const DEFAULT_DESTINATION = "1256 West Street, Hayward, CA 94545";
 const ARRIVAL_BUFFER_SEC = 15 * 60;
+
+const buildOrigin = ({
+  arrivalAirport,
+  arrivalIata,
+  arrivalTerminal,
+}: {
+  arrivalAirport: string | null;
+  arrivalIata: string | null;
+  arrivalTerminal: string | null;
+}) => {
+  if (arrivalIata === "SFO") {
+    return arrivalTerminal
+      ? `San Francisco International Airport Terminal ${arrivalTerminal}`
+      : "San Francisco International Airport Terminal 1";
+  }
+
+  if (arrivalAirport && arrivalTerminal) {
+    return `${arrivalAirport} Terminal ${arrivalTerminal}`;
+  }
+
+  if (arrivalAirport) {
+    return arrivalAirport;
+  }
+
+  return "San Francisco International Airport Terminal 1";
+};
 
 const formatDuration = (seconds: number) => {
   const totalMinutes = Math.round(seconds / 60);
@@ -20,6 +51,8 @@ const formatDuration = (seconds: number) => {
 export async function GET(request: NextRequest) {
   const arrivalTime = request.nextUrl.searchParams.get("arrivalTime");
   const arrivalTerminal = request.nextUrl.searchParams.get("arrivalTerminal");
+  const arrivalAirport = request.nextUrl.searchParams.get("arrivalAirport");
+  const arrivalIata = request.nextUrl.searchParams.get("arrivalIata");
   const destinationParam = request.nextUrl.searchParams.get("destination");
   const destination = destinationParam?.trim() || DEFAULT_DESTINATION;
   const stops = request.nextUrl.searchParams
@@ -50,9 +83,11 @@ export async function GET(request: NextRequest) {
   }
 
   const departureTime = new Date(parsed.getTime() + ARRIVAL_BUFFER_SEC * 1000);
-  const origin = arrivalTerminal
-    ? `John F Kennedy International Airport Terminal ${arrivalTerminal}`
-    : "John F Kennedy International Airport Terminal 8";
+  const origin = buildOrigin({
+    arrivalAirport,
+    arrivalIata,
+    arrivalTerminal,
+  });
 
   const cacheKey = `${origin}|${destination}|${stops.join("|")}|${departureTime.toISOString()}`;
   const cached = cache.get(cacheKey);
@@ -106,7 +141,7 @@ export async function GET(request: NextRequest) {
   }
 
   const routePoints = [origin, ...stops, destination];
-  const mappedLegs = legs.map((leg: any, index: number) => {
+  const mappedLegs = legs.map((leg: RouteLeg, index: number) => {
     const duration = leg.duration;
     const durationSec = Number.parseInt(
       String(duration ?? "0").replace("s", ""),
