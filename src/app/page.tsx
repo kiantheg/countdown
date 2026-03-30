@@ -56,18 +56,11 @@ type PlacePrediction = {
   description: string;
 };
 
-const DEFAULT_FLIGHT_NUMBER = "AA76";
+const DEFAULT_FLIGHT_NUMBER = "AA15";
+const DEFAULT_FLIGHT_DATE = "2026-04-01";
 const DEFAULT_DESTINATION = "1256 West Street, Hayward, CA 94545";
 const DRIVE_TIMEZONE = "America/Los_Angeles";
 const DEFAULT_ORIGIN_LABEL = "SFO American Airlines Terminal";
-
-const getNextApril2 = () => {
-  const today = new Date();
-  const year = today.getFullYear();
-  const candidate = new Date(`${year}-04-02T00:00:00`);
-  const nextYear = year + 1;
-  return (today > candidate ? nextYear : year).toString() + "-04-02";
-};
 
 const formatCountdown = (ms: number) => {
   const totalSeconds = Math.max(0, Math.floor(ms / 1000));
@@ -100,7 +93,7 @@ const formatSlot = (value: number) => String(value).padStart(2, "0");
 
 export default function Home() {
   const [query, setQuery] = useState(DEFAULT_FLIGHT_NUMBER);
-  const [dateQuery, setDateQuery] = useState(getNextApril2());
+  const [dateQuery, setDateQuery] = useState(DEFAULT_FLIGHT_DATE);
   const [flight, setFlight] = useState<FlightInfo | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -139,7 +132,7 @@ export default function Home() {
   };
 
   useEffect(() => {
-    fetchFlight(DEFAULT_FLIGHT_NUMBER, getNextApril2());
+    fetchFlight(DEFAULT_FLIGHT_NUMBER, DEFAULT_FLIGHT_DATE);
   }, []);
 
   useEffect(() => {
@@ -350,7 +343,7 @@ export default function Home() {
       <main className="relative mx-auto flex min-h-screen w-full max-w-6xl flex-col gap-7 px-6 py-10 sm:px-10 sm:py-12 lg:grid lg:grid-cols-[1.06fr_0.94fr] lg:gap-8 lg:py-14">
         <section className="top-rail reveal flex items-center justify-between rounded-full px-5 py-3 text-[11px] uppercase tracking-[0.24em] text-sky-100 lg:col-span-2">
           <span>Kian x Becca • Stanford Visit</span>
-          <span>April 2 arrival</span>
+          <span>April 1 arrival</span>
         </section>
         <section className="reveal flex flex-col gap-6">
           <div className="inline-flex w-fit items-center gap-2 rounded-full border border-sky-500/35 bg-sky-500/12 px-4 py-2 text-xs font-semibold uppercase tracking-[0.25em] text-sky-200 shadow-sm">
@@ -362,7 +355,7 @@ export default function Home() {
             </h1>
             <p className="max-w-lg text-base text-slate-300 sm:text-lg">
               Tracking American Airlines {DEFAULT_FLIGHT_NUMBER} from JFK to SFO
-              on April 2 at 6:00 AM. Live arrival estimates update as the
+              on April 1, 2026. Live arrival estimates update as the
               flight status changes.
             </p>
           </div>
@@ -398,7 +391,7 @@ export default function Home() {
             </div>
             <div className="flex flex-wrap items-center gap-3 text-xs text-slate-300">
               <span className="rounded-full bg-slate-900/80 px-3 py-1">
-                Default: AA76 on Apr 2 at 6:00 AM
+                Default: AA15 on Apr 1, 2026
               </span>
               <span className="rounded-full bg-slate-900/80 px-3 py-1">
                 Powered by AeroDataBox
@@ -413,7 +406,7 @@ export default function Home() {
 
           <div className="lookbook-note reveal-delay-1 rounded-3xl p-6 text-sm text-slate-300">
             <p className="font-medium text-white">
-              Kian&apos;s trip is set for JFK to SFO on April 2.
+              Kian&apos;s trip is set for JFK to SFO on April 1, 2026.
             </p>
             <p className="mt-3">
               The route updates from the SFO American Airlines terminal to Hayward once we have the latest arrival estimate.
@@ -785,11 +778,11 @@ export default function Home() {
         <section className="soft-panel reveal reveal-delay-3 overflow-hidden rounded-[32px] px-0 py-3 text-xs uppercase tracking-[0.18em] text-sky-200 lg:col-span-2">
           <div className="ticker flex gap-10 px-6">
             <span>Stanford visit countdown</span>
-            <span>American Airlines AA76</span>
-            <span>JFK to SFO on April 2</span>
+            <span>American Airlines AA15</span>
+            <span>JFK to SFO on April 1, 2026</span>
             <span>SFO American Airlines terminal to Hayward</span>
             <span>Stanford visit countdown</span>
-            <span>American Airlines AA76</span>
+            <span>American Airlines AA15</span>
             <span>SFO American Airlines terminal to 1256 West Street</span>
           </div>
         </section>
