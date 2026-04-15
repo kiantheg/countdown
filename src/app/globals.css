@@ -3,8 +3,8 @@
 :root {
   --background: #07111f;
   --foreground: #e2e8f0;
-  --font-body: "Avenir Next", "Trebuchet MS", sans-serif;
-  --font-display: "Arial Narrow", "Avenir Next Condensed", "Trebuchet MS", sans-serif;
+  --font-body: var(--font-inter), "Inter", "Avenir Next", "Trebuchet MS", sans-serif;
+  --font-display: var(--font-inter), "Inter", "Avenir Next", sans-serif;
   --font-mono-custom: "SFMono-Regular", "Menlo", "Monaco", "Courier New", monospace;
 }
 
@@ -159,9 +159,39 @@ body {
   box-shadow: 0 8px 18px rgba(2, 6, 23, 0.3);
 }
 
+.ticker-track {
+  white-space: nowrap;
+  animation: ticker 30s linear infinite;
+}
+
+.ticker-track:hover {
+  animation-play-state: paused;
+}
+
+/* Legacy alias */
 .ticker {
   white-space: nowrap;
   animation: ticker 22s linear infinite;
+}
+
+.progress-bar-fill {
+  background: linear-gradient(90deg, #0ea5e9, #38bdf8, #7dd3fc);
+  background-size: 200% 100%;
+  animation: shimmer-progress 2.5s ease-in-out infinite;
+}
+
+.live-dot {
+  animation: live-pulse 2s ease-in-out infinite;
+}
+
+@keyframes shimmer-progress {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes live-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.75); }
 }
 
 @keyframes rise-in {

@@ -10,7 +10,7 @@ type RouteLeg = {
   distanceMeters?: number;
 };
 
-const DEFAULT_DESTINATION = "1256 West Street, Hayward, CA 94545";
+const DEFAULT_DESTINATION = "30 Riverside Blvd, New York, NY 10069";
 const ARRIVAL_BUFFER_SEC = 15 * 60;
 
 const buildOrigin = ({
@@ -22,6 +22,12 @@ const buildOrigin = ({
   arrivalIata: string | null;
   arrivalTerminal: string | null;
 }) => {
+  if (arrivalIata === "JFK") {
+    return arrivalTerminal
+      ? `John F. Kennedy International Airport Terminal ${arrivalTerminal}`
+      : "John F. Kennedy International Airport Terminal 8";
+  }
+
   if (arrivalIata === "SFO") {
     return arrivalTerminal
       ? `San Francisco International Airport Terminal ${arrivalTerminal}`
@@ -36,7 +42,7 @@ const buildOrigin = ({
     return arrivalAirport;
   }
 
-  return "San Francisco International Airport Terminal 1";
+  return "John F. Kennedy International Airport Terminal 8";
 };
 
 const formatDuration = (seconds: number) => {
