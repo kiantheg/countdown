@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { buildTripCalendar, flights, formatCountdown, getTripPhase, itinerary, trip, type FlightLeg } from "../lib/trip";
 import RoutePlanner from "../components/RoutePlanner";
 import { useSyncedPlan } from "../lib/useSyncedPlan";
@@ -146,7 +147,7 @@ export default function Home() {
   return <div className="site-shell">
     <a href="#main" className="skip-link">Skip to content</a>
     <header className="site-header wrap">
-      <a href="#" className="wordmark" aria-label="Kian and Becca home">k<span>&</span>b<span className="wordmark-dot">.</span></a>
+      <a href="#" className="wordmark" aria-label="Kian and Becca home"><Image src="/kb-mark.svg" width={52} height={52} alt="" priority /></a>
       <nav aria-label="Main navigation"><a href="#itinerary">The plan</a><a href="#flights">Flights</a><a href="#arrival">Airport transfer</a></nav>
       <span className="header-date">OCT 28 — NOV 3, 2026</span>
     </header>
@@ -213,6 +214,6 @@ export default function Home() {
 
 
     </main>
-    <footer className="site-footer wrap"><a href="#" className="wordmark">k<span>&</span>b<span className="wordmark-dot">.</span></a><p>October 28 – November 3, 2026</p><a href={trip.planUrl} target="_blank" rel="noreferrer">View original trip plan <Icon name="external" size={13} /></a></footer>
+    <footer className="site-footer wrap"><a href="#" className="wordmark" aria-label="Kian and Becca home"><Image src="/kb-mark.svg" width={40} height={40} alt="" /></a><p>October 28 – November 3, 2026</p><a href={trip.planUrl} target="_blank" rel="noreferrer">View original trip plan <Icon name="external" size={13} /></a></footer>
   </div>;
 }
