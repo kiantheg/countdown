@@ -1,3 +1,5 @@
+import itinerarySnapshot from "../data/itinerary.json";
+
 export type FlightEndpoint = {
   iata: string;
   city: string;
@@ -46,7 +48,6 @@ export const trip = {
   timeZone: "America/Los_Angeles",
   planUrl:
     "https://docs.google.com/document/d/1A24kcHDnDTgx_MNiKILdOdaSXqjE1Fgh0CGSzO0oZ-Q/edit?usp=drivesdk",
-  planUpdated: "2026-10-12",
 } as const;
 
 // Scheduled times verified against the JetBlue itinerary. UTC offsets change
@@ -91,93 +92,12 @@ export const flights: FlightLeg[] = [
   },
 ];
 
-// The shared plan is tentative; question marks and undecided alternatives are
-// additionally flagged so the interface can distinguish them at a glance.
-export const itinerary: ItineraryDay[] = [
-  {
-    date: "2026-10-28",
-    title: "Arrival in San Francisco",
-    stay: "KKG",
-    items: [
-      {
-        time: "8:15 PM ET → 11:58 PM PT",
-        title: "New York → San Francisco",
-        note: "JetBlue B6515 · JFK to SFO",
-      },
-    ],
-  },
-  {
-    date: "2026-10-29",
-    title: "Settling in & Senior Night",
-    stay: "KKG",
-    items: [
-      {
-        time: "After arrival",
-        title: "In-N-Out",
-        note: "The plan says midnight; timing is flexible after the 11:58 PM landing and airport transfer.",
-        tentative: true,
-      },
-      { time: "10:30–11:50 AM", title: "Becca has class" },
-      { title: "Double date?", tentative: true },
-      { time: "10:00 PM", title: "Senior Night!" },
-    ],
-  },
-  {
-    date: "2026-10-30",
-    title: "Pastries & Halloween plans",
-    stay: "KKG",
-    items: [
-      { title: "Arisicault" },
-      { time: "1:30–3:20 PM", title: "Go to class with Becca" },
-      {
-        title: "SNu Halloween party or SF bar crawl",
-        note: "Both options are TBD in the shared plan.",
-        tentative: true,
-      },
-    ],
-  },
-  {
-    date: "2026-10-31",
-    title: "Halloween",
-    stay: "The Huntington Hotel",
-    highlight: "halloween",
-    items: [],
-  },
-  {
-    date: "2026-11-01",
-    title: "One-year anniversary",
-    stay: "KKG",
-    highlight: "anniversary",
-    items: [
-      {
-        title: "Anniversary dinner",
-        note: "Becca is planning dinner; time and location to be confirmed.",
-        tentative: true,
-      },
-    ],
-  },
-  {
-    date: "2026-11-02",
-    title: "Monday on campus",
-    stay: "KKG",
-    items: [
-      { time: "11:30 AM–12:50 PM", title: "Go to class with Becca" },
-      { time: "2:15–3:45 PM", title: "Go to class with Becca" },
-      { time: "4:30–6:00 PM", title: "Becca has a meeting" },
-    ],
-  },
-  {
-    date: "2026-11-03",
-    title: "Return to New York",
-    items: [
-      {
-        time: "10:56 PM PT → 7:24 AM ET (+1 day)",
-        title: "San Francisco → New York",
-        note: "JetBlue B6616 · Arrives Wednesday, November 4",
-      },
-    ],
-  },
-];
+// The snapshot is validated before every build; its source document stays private.
+export const itinerary: ItineraryDay[] = itinerarySnapshot.days as ItineraryDay[];
+export const planSync = {
+  sourceModifiedAt: itinerarySnapshot.sourceModifiedAt,
+  syncedAt: itinerarySnapshot.syncedAt,
+} as const;
 
 export function getTripPhase(nowMs: number): TripPhase {
   if (nowMs < Date.parse(flights[0].arrival.at)) return "upcoming";
@@ -227,8 +147,8 @@ function foldCalendarLine(line: string): string {
 }
 
 /** A deterministic calendar export containing only grounded dates and flights. */
-export function buildTripCalendar(): string {
-  const stamp = "DTSTAMP:20261012T000000Z";
+export function buildTripCalendar(days: ItineraryDay[] = itinerary, syncedAt = planSync.syncedAt): string {
+  const stamp = `DTSTAMP:${calendarUtc(syncedAt)}`;
   const lines = [
     "BEGIN:VCALENDAR",
     "VERSION:2.0",
@@ -259,6 +179,11 @@ export function buildTripCalendar(): string {
     );
   }
 
+  const anniversaryItems = days.find((day) => day.date === "2026-11-01")?.items ?? [];
+  const anniversaryDescription = anniversaryItems.length
+    ? anniversaryItems.map((item) => [item.time, item.title, item.note, item.tentative ? "Tentative" : null].filter(Boolean).join(" · ")).join("\n")
+    : "Anniversary plans are still to be confirmed. See the shared plan for updates.";
+
   lines.push(
     "BEGIN:VEVENT",
     "UID:kian-becca-anniversary-20261101@countdown.local",
@@ -266,7 +191,7 @@ export function buildTripCalendar(): string {
     "DTSTART;VALUE=DATE:20261101",
     "DTEND;VALUE=DATE:20261102",
     `SUMMARY:${escapeCalendarText("Kian & Becca · One-year anniversary")}`,
-    `DESCRIPTION:${escapeCalendarText("Becca is planning dinner. Time and place are still to come.")}`,
+    `DESCRIPTION:${escapeCalendarText(anniversaryDescription)}`,
     "END:VEVENT",
     "END:VCALENDAR",
   );

@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "validate:plan": "node scripts/validate-itinerary.mjs",
+    "test:plan": "node --test scripts/validate-itinerary.test.mjs",
+    "prebuild": "npm run validate:plan"
   },
   "dependencies": {
     "next": "16.1.6",

@@ -649,6 +649,13 @@ p,h1,h2,h3,h4 {
   white-space: nowrap;
 }
 
+.plan-sync-status {
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.6;
+}
+
 .travel-column>.section-heading {
   margin-bottom: 20px;
 }

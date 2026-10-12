@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { buildTripCalendar, flights, formatCountdown, getTripPhase, itinerary, trip, type FlightLeg } from "../lib/trip";
 import RoutePlanner from "../components/RoutePlanner";
+import { useSyncedPlan } from "../lib/useSyncedPlan";
 
 type LiveFlight = {
   status: string;
@@ -104,6 +105,7 @@ function FlightCard({ flight, now }: { flight: FlightLeg; now: number | null }) 
 }
 
 export default function Home() {
+  const plan = useSyncedPlan();
   const [now, setNow] = useState<number | null>(null);
   const [selectedDay, setSelectedDay] = useState(0);
   const [selectedFlight, setSelectedFlight] = useState(0);
@@ -123,7 +125,7 @@ export default function Home() {
   }, []);
 
   function downloadCalendar() {
-    const url = URL.createObjectURL(new Blob([buildTripCalendar()], { type: "text/calendar;charset=utf-8" }));
+    const url = URL.createObjectURL(new Blob([buildTripCalendar(plan.days, plan.syncedAt)], { type: "text/calendar;charset=utf-8" }));
     const link = document.createElement("a");
     link.href = url;
     link.download = "kian-and-becca-october-2026.ics";
@@ -135,7 +137,10 @@ export default function Home() {
   const phase = now === null ? "upcoming" : getTripPhase(now);
   const target = phase === "upcoming" ? flights[0].arrival.at : phase === "together" ? flights[1].departure.at : flights[1].arrival.at;
   const countdown = now === null ? null : formatCountdown(Date.parse(target) - now);
-  const day = itinerary[selectedDay];
+  const day = plan.days[selectedDay];
+  const anniversary = plan.days.find(day => day.date === "2026-11-01");
+  const anniversarySummary = anniversary?.items.map(item => [item.time, item.title, item.note, item.tentative ? "Tentative" : null].filter(Boolean).join(" · ")).join(" / ") || "No activities scheduled yet.";
+  const syncedLabel = new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit", timeZone: trip.timeZone }).format(new Date(plan.syncedAt));
   const phaseTitle = phase === "upcoming" ? "Until San Francisco" : phase === "together" ? "Time left in California" : phase === "homeward" ? "Until New York" : "Trip complete";
 
   return <div className="site-shell">
@@ -182,16 +187,17 @@ export default function Home() {
           <div className="section-heading"><div><p className="eyebrow">OCTOBER 28 – NOVEMBER 3</p><h2 id="plan-title">The itinerary<span>.</span></h2></div><span className="badge">Tentative plans</span></div>
           <p className="section-description">A day-by-day look at the plan. Details may change.</p>
           <div className="day-selector" role="group" aria-label="Choose an itinerary day">
-            {itinerary.map((item, index) => <button key={item.date} onClick={() => setSelectedDay(index)} aria-pressed={selectedDay === index} className={`day-button ${selectedDay === index ? "selected" : ""} ${item.highlight ? "special-day" : ""}`} aria-label={new Intl.DateTimeFormat("en-US", { weekday: "long", month: "long", day: "numeric", timeZone: "UTC" }).format(new Date(`${item.date}T12:00:00Z`))}>
+            {plan.days.map((item, index) => <button key={item.date} onClick={() => setSelectedDay(index)} aria-pressed={selectedDay === index} className={`day-button ${selectedDay === index ? "selected" : ""} ${item.highlight ? "special-day" : ""}`} aria-label={new Intl.DateTimeFormat("en-US", { weekday: "long", month: "long", day: "numeric", timeZone: "UTC" }).format(new Date(`${item.date}T12:00:00Z`))}>
               <span>{new Intl.DateTimeFormat("en-US", { weekday: "short", timeZone: "UTC" }).format(new Date(`${item.date}T12:00:00Z`))}</span><strong>{Number(item.date.slice(-2))}</strong><span className="day-marker">{item.highlight === "anniversary" ? "•" : item.highlight === "halloween" ? "✳" : "·"}</span>
             </button>)}
           </div>
           <div className={`day-detail ${day.highlight === "anniversary" ? "anniversary-day" : ""}`} aria-live="polite">
             <div className="day-detail-heading"><div><p className="eyebrow">{shortDate(`${day.date}T12:00:00Z`, "UTC")} · DAY {selectedDay + 1}</p><h3>{day.title}</h3></div>{day.highlight && <span className="day-doodle" aria-hidden="true">{day.highlight === "anniversary" ? "01" : "✳"}</span>}</div>
-            {day.items.length === 0 && <p className="open-day-note">No activities scheduled yet. Halloween plans are still open.</p>}<ol className="timeline">{day.items.map((item, i) => <li key={i}><span className="timeline-dot" /><div className="activity-time">{item.time ?? "Anytime"}</div><div><h4>{item.title}{item.tentative && <span className="tentative-dot">To decide</span>}</h4>{item.note && <p>{item.note}</p>}</div></li>)}</ol>
+            {day.items.length === 0 && <p className="open-day-note">No activities scheduled yet.</p>}<ol className="timeline">{day.items.map((item, i) => <li key={i}><span className="timeline-dot" /><div className="activity-time">{item.time ?? "Anytime"}</div><div><h4>{item.title}{item.tentative && <span className="tentative-dot">To decide</span>}</h4>{item.note && <p>{item.note}</p>}</div></li>)}</ol>
             {day.stay && <div className="stay-note"><span>STAYING</span><strong>{day.stay}</strong></div>}
           </div>
-          <div className="plan-footnote"><span>Pacific time · Saved Oct 12, 2026 · Not synced automatically.</span><a href={trip.planUrl} target="_blank" rel="noreferrer">View latest Google Doc <Icon name="external" size={13} /></a></div>
+          <div className="plan-footnote"><span title="The Google Doc is checked hourly while Codex is running on the sync computer. Published changes appear here automatically.">{now !== null && now >= Date.parse("2026-11-05T08:00:00Z") ? "Final saved plan" : "Auto-sync hourly"} · Synced {syncedLabel} PT<br />Activity times are Pacific.</span><a href={trip.planUrl} target="_blank" rel="noreferrer">View Google Doc <Icon name="external" size={13} /></a></div>
+          {plan.offline && <p className="plan-sync-status" role="status">Updates are temporarily unavailable. Showing the last synced plan.</p>}
         </section>
 
         <aside className="travel-column" id="flights" aria-labelledby="flights-title">
@@ -203,7 +209,7 @@ export default function Home() {
       </div>
       <RoutePlanner key={flights[selectedFlight].id} flight={flights[selectedFlight]} />
 
-      <section className="anniversary-banner" aria-labelledby="anniversary-title"><div className="anniversary-icon"><Icon name="calendar" size={30} /></div><div><p className="eyebrow">SUNDAY, NOVEMBER 1</p><h2 id="anniversary-title">One-year anniversary</h2><p>Becca is planning dinner. Time and location are still to be confirmed.</p></div><span className="anniversary-one" aria-hidden="true">01<span>NOVEMBER</span></span></section>
+      <section className="anniversary-banner" aria-labelledby="anniversary-title"><div className="anniversary-icon"><Icon name="calendar" size={30} /></div><div><p className="eyebrow">SUNDAY, NOVEMBER 1</p><h2 id="anniversary-title">One-year anniversary</h2><p>{anniversarySummary}</p></div><span className="anniversary-one" aria-hidden="true">01<span>NOVEMBER</span></span></section>
 
 
     </main>
