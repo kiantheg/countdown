@@ -1,6 +1,6 @@
 {
-  "sourceModifiedAt": "2026-10-12T06:13:35.473Z",
-  "syncedAt": "2026-10-12T20:43:02.000Z",
+  "sourceModifiedAt": "2026-10-12T20:57:59.782Z",
+  "syncedAt": "2026-10-12T21:45:20.000Z",
   "days": [
     {
       "date": "2026-10-28",
@@ -63,7 +63,13 @@
       "title": "Halloween",
       "stay": "The Huntington Hotel",
       "highlight": "halloween",
-      "items": []
+      "items": [
+        {
+          "title": "Kian is planning the day",
+          "note": "Details to be confirmed.",
+          "tentative": true
+        }
+      ]
     },
     {
       "date": "2026-11-01",
