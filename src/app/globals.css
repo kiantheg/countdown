@@ -1,18 +1,1985 @@
 @import "tailwindcss";
 
-:root{--background:#f9f8f3;--foreground:#263b35;--muted:#70776b;--olive:#63764e;--line:#dedfd4;--serif:Georgia,"Times New Roman",serif;--font-body:Arial,Helvetica,sans-serif}
-@theme inline{--color-background:var(--background);--color-foreground:var(--foreground);--font-sans:var(--font-body)}
-*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:28px}body{margin:0;background:var(--background);color:var(--foreground);font-family:var(--font-body);font-size:14px;-webkit-font-smoothing:antialiased}button,input{font:inherit}button,a,input,summary{-webkit-tap-highlight-color:transparent}button,a{touch-action:manipulation}button{cursor:pointer}button:disabled{cursor:wait;opacity:.55}a{color:inherit;text-decoration:none}button{color:inherit}button:focus-visible,a:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid #728959;outline-offset:5px}::selection{background:#dce4cc}p,h1,h2,h3,h4{margin:0}.wrap{max-width:1200px;margin:0 auto;padding:0 44px}.site-shell{overflow:hidden}.site-header{height:102px;display:flex;align-items:center;border-bottom:1px solid var(--line);gap:40px}.wordmark{font-family:var(--serif);font-size:37px;letter-spacing:-3px;line-height:1}.wordmark>span{font-style:italic;font-size:27px;margin:0 2px}.wordmark .wordmark-dot{color:#849662;margin:0;font-size:40px}.site-header nav{display:flex;gap:29px;margin-left:45px;font-size:12px}.site-header nav a{padding:10px 0;color:#60695c}.site-header nav a:hover{color:var(--foreground)}.header-date{margin-left:auto;letter-spacing:1.5px;font-size:10px}.eyebrow{font-size:9px;font-weight:600;letter-spacing:1.6px;line-height:1.8}.hero{display:grid;grid-template-columns:1.2fr 1fr;gap:55px;padding:65px 0 39px;align-items:center}.hero .eyebrow{display:flex;align-items:center;gap:8px}.tiny-star{color:var(--olive);font-size:19px;line-height:1}.hero h1{font-family:var(--serif);font-size:clamp(55px,5.5vw,76px);line-height:1.07;font-weight:400;letter-spacing:-3.7px;margin:20px 0 22px;position:relative}.hero h1 em{font-weight:400;color:#728356}.drawn-heart{color:#8a956a;display:inline-block;font-family:var(--serif);font-size:61px;line-height:0;margin-left:30px;transform:rotate(-16deg);vertical-align:middle}.hero-description{max-width:360px;line-height:1.9;color:#757a6e;font-size:13px}.hero-dates{display:flex;align-items:center;gap:10px;font-size:11px;margin:23px 0;color:#596451}.dot-separator{color:#acafa3;margin:0 3px}.hero-actions{display:flex;align-items:center;gap:11px}.button{border:1px solid transparent;display:inline-flex;align-items:center;justify-content:center;gap:12px;padding:13px 17px;border-radius:5px;font-weight:500;font-size:11px;transition:background .15s,transform .15s;min-height:42px}.button:hover{transform:translateY(-1px)}.button-dark{background:#344b3b;color:white}.button-dark:hover{background:#456047}.button-light{background:transparent;border-color:var(--line)}.button-light:hover{background:#eeeee5}.calendar-feedback{font-size:10px;color:var(--olive);min-height:20px;margin-top:9px;max-width:390px;line-height:1.5}.postcard{position:relative;padding:21px 20px 15px;background:#f0f0e4;transform:rotate(2deg);border:1px solid #e1e2d5;box-shadow:4px 9px 0 -4px #e8e8de,0 12px 25px -20px #5f6b57;margin:0 3px 15px 0}.postcard:before{content:"";position:absolute;top:-15px;left:36%;height:31px;width:115px;transform:rotate(-6deg);background:#dce0c9c9;clip-path:polygon(2% 0,99% 2%,96% 15%,100% 27%,97% 40%,100% 60%,97% 76%,100% 100%,1% 98%,3% 70%,0 40%,3% 20%)}.postcard-top{display:flex;justify-content:space-between;color:#7c8370;font-size:7px;letter-spacing:1.5px}.postcard-title{font-family:var(--serif);font-size:35px;letter-spacing:-1.3px;line-height:1.4;margin:16px 0 13px;text-align:center}.bridge-art{display:block;width:100%;height:auto}.postcard-bottom{display:flex;align-items:center;justify-content:space-between;padding-top:15px}.postcard-bottom>span:first-child{font-family:var(--serif);font-style:italic;font-size:14px;color:#747d67}.postcard-stamp{border:1px solid #a4ad8e;outline:1px dashed #b2b99e;outline-offset:3px;min-width:60px;min-height:50px;display:flex;align-items:center;flex-direction:column;gap:4px;padding:5px;font-size:6px;letter-spacing:1.5px;transform:rotate(-7deg);color:#788567;margin-right:7px}.countdown-band{border-top:1px solid var(--line);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:26px 0 29px;margin-bottom:57px;gap:30px}.countdown-label>.eyebrow{font-size:8px;color:#808875}.countdown-label h2{font-family:var(--serif);font-size:22px;font-weight:400;letter-spacing:-.5px;margin:7px 0}.countdown-label h2 span,.section-heading h2>span{color:#829469}.countdown-label>p:last-child{font-size:9px;color:#7b8274;line-height:1.5}.countdown-numbers{display:flex;gap:32px;text-align:center;padding-right:18px}.countdown-numbers>div{min-width:50px;position:relative}.countdown-numbers>div:not(:last-child):after{content:":";position:absolute;right:-19px;top:3px;font-family:var(--serif);font-size:30px;color:#c6cabb}.countdown-numbers strong{display:block;font-family:var(--serif);font-size:46px;font-weight:400;letter-spacing:-1px;font-variant-numeric:tabular-nums;line-height:1.1}.countdown-numbers span{display:block;font-size:8px;color:#8c9183;text-transform:uppercase;letter-spacing:1.1px;margin-top:8px}.memory-heart{color:#798961;padding-right:30px}.main-grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:60px}.section-heading{display:flex;align-items:center;justify-content:space-between;gap:12px}.section-heading .eyebrow{font-size:8px;color:#7d8771;letter-spacing:1.3px}.section-heading h2{font-family:var(--serif);font-size:31px;letter-spacing:-1px;font-weight:400;margin-top:5px}.badge{font-size:8px;border:1px solid #dde0cf;padding:6px 9px;border-radius:20px;white-space:nowrap;color:#7b826b}.section-description{font-size:11px;color:#8a8e80;margin-top:11px}.day-selector{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:7px;margin:25px 0 21px}.day-button{display:flex;flex-direction:column;align-items:center;border:1px solid #e3e4d9;border-radius:7px;padding:11px 0 3px;background:transparent;min-height:88px;transition:background .15s}.day-button>span:first-child{font-size:8px;letter-spacing:.5px;color:#89917c}.day-button strong{font-family:var(--serif);font-size:24px;font-weight:400;margin-top:5px}.day-button .day-marker{font-size:13px;line-height:16px;color:transparent}.day-button.special-day .day-marker{color:#829368}.day-button:hover{background:#eff1e7}.day-button.selected{background:#344b3b;color:#fff;border-color:#344b3b}.day-button.selected>span:first-child{color:#d6ddcd}.day-button.selected .day-marker{color:#d6ddcd}.day-detail{padding:22px 23px 0;border-radius:9px;background:#f0f1e7;min-height:291px;border:1px solid #e4e6d8}.day-detail-heading{display:flex;justify-content:space-between;align-items:center}.day-detail-heading .eyebrow{font-size:8px;color:#859172}.day-detail h3{font-family:var(--serif);font-size:25px;letter-spacing:-.7px;font-weight:400;line-height:1.2;margin-top:6px}.day-doodle{font-family:var(--serif);font-size:44px;line-height:1;color:#819266}.timeline{list-style:none;margin:23px 0 20px;padding:0}.timeline li{position:relative;display:grid;grid-template-columns:84px 1fr;gap:11px;padding:0 0 25px 18px}.timeline li:not(:last-child):before{content:"";position:absolute;width:1px;left:3px;top:10px;bottom:0;background:#d4d9c6}.timeline li:last-child{padding-bottom:3px}.timeline-dot{height:7px;width:7px;position:absolute;left:0;top:4px;border-radius:50%;background:#a6b18e;border:2px solid #f0f1e7;outline:1px solid #a6b18e}.activity-time{font-size:10px;line-height:1.6;color:#777f6a}.timeline h4{font-size:11px;line-height:1.6;font-weight:500}.timeline p{font-size:10px;line-height:1.75;color:#7c846f;margin-top:4px}.tentative-dot{font-size:7px;display:inline-block;border:1px solid #d6dac8;border-radius:3px;padding:0 4px;margin-left:6px;color:#788065}.stay-note{border-top:1px solid #dce0d0;display:flex;align-items:center;justify-content:space-between;padding:14px 0;margin-top:15px}.stay-note span{font-size:7px;letter-spacing:1.2px;color:#7b856d}.stay-note strong{font-size:10px;font-weight:500}.plan-footnote{display:flex;justify-content:space-between;align-items:center;font-size:8px;line-height:1.7;gap:13px;color:#919686;margin-top:13px}.plan-footnote a{display:flex;align-items:center;gap:5px;color:#6b7b56;white-space:nowrap}.travel-column>.section-heading{margin-bottom:20px}.travel-column>.section-heading>svg{color:#879471;transform:rotate(10deg)}.flight-tabs{display:grid;grid-template-columns:1fr 1fr;background:#eeefe6;border:1px solid #e4e5db;border-radius:6px;padding:4px;margin-bottom:13px;gap:4px}.flight-tabs button{background:transparent;border:0;border-radius:3px;display:flex;align-items:center;flex-direction:column;padding:10px 5px;font-size:10px;gap:4px;color:#7e8772}.flight-tabs button span{font-size:7px;letter-spacing:1px}.flight-tabs button.active{background:#fffefa;box-shadow:0 1px 4px #35422d0a;color:#374e3b}.flight-ticket{background:#fffefa;border:1px solid #e4e4d8;border-radius:9px;padding:22px 22px 0;box-shadow:0 6px 14px -12px #62725133}.ticket-heading{display:flex;justify-content:space-between;align-items:center}.airline{font-size:20px;font-weight:700;letter-spacing:-1px;color:#334b66}.airline>span{font-size:9px;font-weight:400;letter-spacing:.5px;color:#8b9184;margin-left:5px}.status-pill{display:flex;align-items:center;gap:5px;font-size:8px;color:#7c8f5e;background:#f0f3e8;border-radius:20px;padding:5px 8px;max-width:110px;overflow-wrap:anywhere}.status-pill>span{width:4px;height:4px;background:#93a875;border-radius:50%;flex-shrink:0}.ticket-route{display:grid;grid-template-columns:1fr 1.2fr 1fr;align-items:center;margin-top:27px;gap:12px}.ticket-route>div:last-child{text-align:right}.ticket-route .airport{font-family:var(--serif);font-size:36px;letter-spacing:-1px;line-height:1}.ticket-route p:not(.airport){font-size:8px;color:#8d9583;margin-top:7px}.flight-line{display:flex;align-items:center;gap:8px;color:#96a780}.flight-line span{flex:1;border-bottom:1px dashed #cbd3bf}.flight-line svg{transform:rotate(40deg);width:16px}.ticket-times{display:flex;justify-content:space-between;margin-top:23px;margin-bottom:23px}.ticket-times>div{display:flex;flex-direction:column;gap:5px}.ticket-times>div:last-child{text-align:right}.ticket-times strong{font-size:14px;font-weight:500}.ticket-times span{font-size:8px;color:#8a9280}.ticket-bottom{position:relative;border-top:1px dashed #daddcf;margin:0 -22px;padding:16px 22px;display:flex;justify-content:space-between;font-size:8px;color:#849075;gap:10px}.ticket-bottom:before,.ticket-bottom:after{content:"";position:absolute;top:-7px;width:13px;height:13px;border:1px solid #e4e4d8;border-radius:50%;background:var(--background)}.ticket-bottom:before{left:-7px;border-left-color:transparent;border-bottom-color:transparent;transform:rotate(45deg)}.ticket-bottom:after{right:-7px;border-top-color:transparent;border-right-color:transparent;transform:rotate(45deg)}.ticket-status{border-top:1px solid #f0f0e7;padding:9px 0 13px}.flight-status-heading{display:flex;align-items:center;justify-content:space-between;gap:8px}.flight-status-heading p{font-size:8px;color:#909784}.icon-button{display:inline-flex;align-items:center;justify-content:center;border:0;border-radius:50%;width:30px;height:30px;background:transparent;color:#738163}.icon-button:hover{background:#eff2e7}.status-message,.live-details{font-size:8px;line-height:1.6;color:#909784}.live-details{color:#53694b;margin-bottom:5px}.flight-footnote{font-size:8px;line-height:1.7;color:#939988;margin:10px 4px 18px}.route-planner{border-top:1px solid var(--line);border-bottom:1px solid var(--line);font-size:10px}.route-planner summary{cursor:pointer;padding:16px 0;display:flex;justify-content:space-between;align-items:center;list-style:none;gap:10px}.route-planner summary::-webkit-details-marker{display:none}.route-planner summary>span{font-size:9px;color:#8c9580}.route-planner-content{padding-bottom:18px}.route-planner-content>p{color:#858f79;line-height:1.6;margin-bottom:13px}.route-planner label{display:block;font-size:9px;margin:12px 0 6px}.route-planner input{display:block;width:100%;min-width:0;border:1px solid #d8ddcd;border-radius:4px;background:#fffefa;padding:11px;font-size:11px}.route-actions{display:flex;justify-content:space-between;align-items:center;margin-top:12px;gap:10px}.text-button{border:0;background:transparent;padding:10px 0;font-size:10px}.button-small{font-size:10px;padding:10px 13px;min-height:36px}.stop-row{display:flex;margin-top:9px;gap:8px}.stop-row>button{background:transparent;border:0;font-size:20px;width:24px}.route-result{background:#eaf0df;border-radius:5px;padding:12px;margin-top:12px}.route-result strong{font-size:12px;font-weight:500}.route-result p,.route-error{margin-top:6px;line-height:1.7;font-size:10px;color:#758164}.maps-link{display:inline-block;font-size:10px;text-decoration:underline;margin-top:12px;color:#60764b}.anniversary-banner{display:flex;align-items:center;gap:25px;background:#edeedd;border:1px solid #e0e3cd;border-radius:8px;margin-top:52px;padding:29px 35px}.anniversary-icon{width:63px;height:63px;display:flex;align-items:center;justify-content:center;border:1px solid #cbd4b7;border-radius:50%;color:#7f9062;flex-shrink:0;transform:rotate(-10deg)}.anniversary-banner .eyebrow{font-size:8px;color:#8a9675;letter-spacing:1.4px}.anniversary-banner h2{font-family:var(--serif);font-size:27px;font-weight:400;letter-spacing:-.8px;margin:7px 0}.anniversary-banner p:last-child{font-size:10px;color:#8c947c;line-height:1.7}.anniversary-one{font-family:var(--serif);font-size:58px;line-height:1;color:#acb794;margin-left:auto;text-align:center;flex-shrink:0}.anniversary-one span{display:block;font-family:var(--font-body);font-size:7px;letter-spacing:1.5px;margin-top:7px}.essentials{margin:49px 0 45px}.checklist-count{font-size:9px;color:#8d967f}.checklist-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 40px;margin-top:24px}.checklist-item{display:flex;align-items:flex-start;gap:11px;border-top:1px solid var(--line);padding:18px 0;position:relative;cursor:pointer}.checklist-item input{position:absolute;opacity:0;width:18px;height:18px;left:0;top:18px}.checkbox-visual{width:17px;height:17px;border:1px solid #c8d0b9;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;background:#fffefa}.checkbox-visual svg{opacity:0}.checklist-item input:focus-visible+.checkbox-visual{outline:2px solid var(--olive);outline-offset:4px}.checklist-item.is-checked .checkbox-visual{background:#798e61;border-color:#798e61;color:white}.checklist-item.is-checked .checkbox-visual svg{opacity:1}.checklist-item>span:last-child{display:flex;flex-direction:column;gap:5px}.checklist-item strong{font-size:11px;font-weight:500;line-height:1.6}.checklist-item>span:last-child>span{font-size:9px;color:#929985;line-height:1.6}.checklist-item.is-checked strong{color:#909c80;text-decoration:line-through}.saved-note{font-size:8px;color:#98a08d;margin-top:5px}.site-footer{min-height:100px;display:flex;align-items:center;gap:25px;border-top:1px solid var(--line);margin-bottom:10px}.site-footer .wordmark{font-size:27px;letter-spacing:-2px}.site-footer .wordmark>span{font-size:20px}.site-footer .wordmark .wordmark-dot{font-size:29px}.site-footer p{font-family:var(--serif);font-size:13px;font-style:italic;color:#9ca38e;margin-left:15px}.site-footer>a:last-child{margin-left:auto;display:flex;align-items:center;gap:7px;font-size:8px;color:#939f80}.skip-link{position:fixed;top:8px;left:8px;z-index:100;transform:translateY(-150%);background:#344b3b;color:#fff;padding:12px;border-radius:4px}.skip-link:focus{transform:translateY(0)}.sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
-@media(min-width:1500px){.wrap{max-width:1280px}.hero{padding-top:75px;padding-bottom:49px}.hero h1{font-size:84px}}
-@media(max-width:1000px){.wrap{padding-left:30px;padding-right:30px}.hero{gap:30px}.hero h1{font-size:64px}.main-grid{gap:32px}.countdown-numbers{gap:23px;padding-right:0}.countdown-numbers>div:not(:last-child):after{right:-14px}.countdown-numbers strong{font-size:41px}.ticket-route{gap:6px}.ticket-route .airport{font-size:32px}.postcard-title{font-size:30px}.plan-footnote{align-items:flex-start;flex-direction:column;gap:4px}.anniversary-banner{padding:27px}.timeline li{grid-template-columns:72px 1fr}}
-@media(max-width:760px){.wrap{padding-left:24px;padding-right:24px}.site-header{height:83px;gap:20px}.site-header nav{margin-left:auto;gap:21px;font-size:11px}.header-date{display:none}.hero{padding-top:43px;padding-bottom:25px;gap:27px;grid-template-columns:1fr 1fr}.hero h1{font-size:49px;letter-spacing:-2.5px;margin:17px 0}.hero .eyebrow{font-size:7px;letter-spacing:1px}.drawn-heart{font-size:40px;margin-left:12px}.hero-description{font-size:11px}.hero-dates{font-size:9px;gap:5px;flex-wrap:wrap;margin:18px 0}.hero-actions{gap:8px;flex-wrap:wrap}.hero-actions .button{font-size:10px;padding:10px 11px}.postcard{padding:16px 13px 12px}.postcard-top{font-size:5px;letter-spacing:1px}.postcard-title{font-size:25px}.postcard-bottom>span:first-child{font-size:10px}.postcard-stamp{min-width:45px;min-height:41px;font-size:5px}.countdown-band{padding:23px 0;margin-bottom:36px;gap:20px}.countdown-label h2{font-size:19px}.countdown-label>p:last-child{font-size:8px;max-width:225px}.countdown-numbers{gap:14px}.countdown-numbers>div{min-width:37px}.countdown-numbers strong{font-size:34px}.countdown-numbers>div:not(:last-child):after{font-size:22px;right:-10px}.countdown-numbers span{font-size:6px;letter-spacing:.8px}.main-grid{grid-template-columns:1fr;gap:37px}.section-heading h2{font-size:31px}.day-selector{gap:9px;margin-top:21px}.day-button{min-height:86px}.day-detail{min-height:265px}.timeline li{grid-template-columns:110px 1fr;padding-bottom:26px}.timeline h4{font-size:12px}.timeline p{font-size:11px}.activity-time{font-size:11px}.plan-footnote{flex-direction:row;font-size:8px}.travel-column{max-width:none}.ticket-route{margin-top:24px;grid-template-columns:1fr 1.8fr 1fr}.ticket-route .airport{font-size:42px}.ticket-route p:not(.airport){font-size:10px}.ticket-times strong{font-size:18px}.ticket-times span{font-size:10px}.ticket-bottom{font-size:10px}.ticket-status p{font-size:9px}.flight-tabs button{font-size:11px}.flight-tabs button span{font-size:8px}.airline{font-size:23px}.status-pill{font-size:9px}.route-planner{font-size:12px}.route-planner summary>span{font-size:10px}.anniversary-banner{margin-top:34px;gap:17px;padding:24px 19px}.anniversary-banner h2{font-size:24px}.anniversary-banner p:last-child{font-size:9px}.anniversary-one{font-size:45px}.anniversary-icon{height:45px;width:45px}.anniversary-icon svg{width:25px}.essentials{margin-top:36px}.essentials .eyebrow{font-size:7px;letter-spacing:1px}.checklist-grid{gap:0 25px}.site-footer{min-height:90px;gap:14px}.site-footer p{margin-left:5px;font-size:11px}.site-footer>a:last-child{font-size:7px}}
-@media(max-width:520px){.wrap{padding-left:21px;padding-right:21px}.site-header nav{gap:16px;font-size:10px}.wordmark{font-size:33px}.hero{grid-template-columns:1fr;padding-top:34px;gap:21px}.hero h1{font-size:65px;letter-spacing:-3.2px;margin:17px 0 20px}.hero .eyebrow{font-size:8px}.drawn-heart{font-size:52px;margin-left:25px}.hero-description{font-size:12px;max-width:310px}.hero-dates{font-size:10px;margin:20px 0}.hero-actions{flex-wrap:nowrap;gap:10px}.hero-actions .button{font-size:10px;padding:12px 14px}.calendar-feedback{min-height:0}.calendar-feedback:empty{display:none}.postcard{margin:15px 5px 20px 7px;padding:18px 17px 13px}.postcard-top{font-size:7px}.postcard-title{font-size:33px;margin:12px 0}.postcard-bottom>span:first-child{font-size:13px}.postcard-stamp{min-width:53px;font-size:6px}.countdown-band{flex-direction:column;align-items:flex-start;gap:23px;padding:23px 0 28px;margin-bottom:35px}.countdown-label h2{font-size:24px;margin:7px 0 8px}.countdown-label>p:last-child{max-width:none;font-size:8px}.countdown-numbers{width:100%;justify-content:space-between;padding-right:10px;padding-left:5px;gap:20px}.countdown-numbers>div{min-width:49px}.countdown-numbers strong{font-size:43px}.countdown-numbers>div:not(:last-child):after{right:-25px;top:6px;font-size:26px}.countdown-numbers span{font-size:7px}.section-heading h2{font-size:29px}.section-heading .eyebrow{font-size:7px;letter-spacing:1px}.badge{font-size:7px;padding:5px 7px}.day-selector{gap:5px;margin-bottom:15px}.day-button{min-height:78px;padding-top:10px}.day-button strong{font-size:23px}.day-button>span:first-child{font-size:7px}.day-detail{padding:20px 17px 0;min-height:280px}.day-detail h3{font-size:24px}.timeline li{grid-template-columns:83px 1fr;gap:7px;padding-left:15px}.timeline h4{font-size:11px}.timeline p{font-size:10px}.activity-time{font-size:9px}.plan-footnote{flex-direction:column;gap:6px}.anniversary-banner{gap:13px;align-items:flex-start;padding:23px 18px}.anniversary-banner h2{font-size:24px;line-height:1.2}.anniversary-icon{height:34px;width:34px;margin-top:4px}.anniversary-icon svg{width:21px}.anniversary-one{display:none}.checklist-grid{grid-template-columns:1fr;margin-top:20px}.checklist-item{padding:17px 0}.checklist-item strong{font-size:12px}.checklist-item>span:last-child>span{font-size:10px}.checklist-count{font-size:8px;white-space:nowrap}.site-footer{flex-wrap:wrap;gap:12px;padding-top:20px;padding-bottom:20px}.site-footer p{font-size:12px}.site-footer>a:last-child{width:100%;justify-content:center;margin:0;font-size:8px}.saved-note{font-size:9px}}
-@media(max-width:360px){.wrap{padding-left:16px;padding-right:16px}.hero h1{font-size:60px}.hero-actions{gap:6px}.hero-actions .button{font-size:9px;padding:11px}.countdown-numbers>div:not(:last-child):after{right:-20px}.timeline li{grid-template-columns:67px 1fr}.badge{font-size:6px}.site-header nav{gap:12px}}
-@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation:none!important;transition:none!important}.button:hover{transform:none}}
+:root {
+  --background: #f9f8f3;
+  --foreground: #263b35;
+  --muted: #70776b;
+  --olive: #63764e;
+  --line: #dedfd4;
+  --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, Helvetica, sans-serif;
+}
 
-.open-day-note{font-size:12px;line-height:1.8;color:#7c846f;padding:22px 0 32px;max-width:290px}
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-body);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 28px;
+}
+
+body {
+  margin: 0;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body);
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+}
+
+button,input {
+  font: inherit;
+}
+
+button,a,input,summary {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button,a {
+  touch-action: manipulation;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: wait;
+  opacity: .55;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  color: inherit;
+}
+
+button:focus-visible,a:focus-visible,input:focus-visible,summary:focus-visible {
+  outline: 2px solid #728959;
+  outline-offset: 5px;
+}
+
+::selection {
+  background: #dce4cc;
+}
+
+p,h1,h2,h3,h4 {
+  margin: 0;
+}
+
+.wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 44px;
+}
+
+.site-shell {
+  overflow: hidden;
+}
+
+.site-header {
+  height: 102px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--line);
+  gap: 40px;
+}
+
+.wordmark {
+  font-family: var(--font-body);
+  font-size: 37px;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  font-weight: 650;
+}
+
+.wordmark>span {
+  font-style: normal;
+  font-size: 27px;
+  margin: 0 2px;
+}
+
+.wordmark .wordmark-dot {
+  color: #849662;
+  margin: 0;
+  font-size: 40px;
+}
+
+.site-header nav {
+  display: flex;
+  gap: 29px;
+  margin-left: 45px;
+  font-size: 12px;
+}
+
+.site-header nav a {
+  padding: 10px 0;
+  color: #60695c;
+}
+
+.site-header nav a:hover {
+  color: var(--foreground);
+}
+
+.header-date {
+  margin-left: auto;
+  letter-spacing: 1.5px;
+  font-size: 10px;
+}
+
+.eyebrow {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 1.6px;
+  line-height: 1.8;
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 55px;
+  padding: 65px 0 39px;
+  align-items: center;
+}
+
+.hero .eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hero h1 {
+  font-family: var(--font-body);
+  font-size: clamp(55px,5.5vw,76px);
+  line-height: 1.1;
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  margin: 20px 0 22px;
+  position: relative;
+}
+
+.hero h1 em {
+  font-weight: inherit;
+  color: #728356;
+  font-style: normal;
+}
+
+.hero-description {
+  max-width: 360px;
+  line-height: 1.9;
+  color: #757a6e;
+  font-size: 13px;
+}
+
+.hero-dates {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+  margin: 23px 0;
+  color: #596451;
+}
+
+.dot-separator {
+  color: #acafa3;
+  margin: 0 3px;
+}
+
+.hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+
+.button {
+  border: 1px solid transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 13px 17px;
+  border-radius: 5px;
+  font-weight: 500;
+  font-size: 11px;
+  transition: background .15s,transform .15s;
+  min-height: 42px;
+}
+
+.button:hover {
+  transform: translateY(-1px);
+}
+
+.button-dark {
+  background: #344b3b;
+  color: white;
+}
+
+.button-dark:hover {
+  background: #456047;
+}
+
+.button-light {
+  background: transparent;
+  border-color: var(--line);
+}
+
+.button-light:hover {
+  background: #eeeee5;
+}
+
+.calendar-feedback {
+  font-size: 10px;
+  color: var(--olive);
+  min-height: 20px;
+  margin-top: 9px;
+  max-width: 390px;
+  line-height: 1.5;
+}
+
+.postcard {
+  position: relative;
+  padding: 21px 20px 15px;
+  background: #f0f0e4;
+  transform: rotate(2deg);
+  border: 1px solid #e1e2d5;
+  box-shadow: 4px 9px 0 -4px #e8e8de,0 12px 25px -20px #5f6b57;
+  margin: 0 3px 15px 0;
+}
+
+.postcard:before {
+  content: "";
+  position: absolute;
+  top: -15px;
+  left: 36%;
+  height: 31px;
+  width: 115px;
+  transform: rotate(-6deg);
+  background: #dce0c9c9;
+  clip-path: polygon(2% 0,99% 2%,96% 15%,100% 27%,97% 40%,100% 60%,97% 76%,100% 100%,1% 98%,3% 70%,0 40%,3% 20%);
+}
+
+.postcard-top {
+  display: flex;
+  justify-content: space-between;
+  color: #7c8370;
+  font-size: 7px;
+  letter-spacing: 1.5px;
+}
+
+.postcard-title {
+  font-family: var(--font-body);
+  font-size: 35px;
+  letter-spacing: -0.02em;
+  line-height: 1.4;
+  margin: 16px 0 13px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.bridge-art {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.postcard-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 15px;
+}
+
+.postcard-bottom>span:first-child {
+  font-family: var(--font-body);
+  font-style: normal;
+  font-size: 14px;
+  color: #747d67;
+  font-weight: 500;
+}
+
+.postcard-stamp {
+  border: 1px solid #a4ad8e;
+  outline: 1px dashed #b2b99e;
+  outline-offset: 3px;
+  min-width: 60px;
+  min-height: 50px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 4px;
+  padding: 5px;
+  font-size: 6px;
+  letter-spacing: 1.5px;
+  transform: rotate(-7deg);
+  color: #788567;
+  margin-right: 7px;
+}
+
+.countdown-band {
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 26px 0 29px;
+  margin-bottom: 57px;
+  gap: 30px;
+}
+
+.countdown-label>.eyebrow {
+  font-size: 8px;
+  color: #808875;
+}
+
+.countdown-label h2 {
+  font-family: var(--font-body);
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin: 7px 0;
+}
+
+.countdown-label h2 span,.section-heading h2>span {
+  color: #829469;
+}
+
+.countdown-label>p:last-child {
+  font-size: 9px;
+  color: #7b8274;
+  line-height: 1.5;
+}
+
+.countdown-numbers {
+  display: flex;
+  gap: 32px;
+  text-align: center;
+  padding-right: 18px;
+}
+
+.countdown-numbers>div {
+  min-width: 50px;
+  position: relative;
+}
+
+.countdown-numbers>div:not(:last-child):after {
+  content: ":";
+  position: absolute;
+  right: -19px;
+  top: 3px;
+  font-family: var(--font-body);
+  font-size: 30px;
+  color: #c6cabb;
+}
+
+.countdown-numbers strong {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 46px;
+  font-weight: 500;
+  letter-spacing: -0.025em;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+}
+
+.countdown-numbers span {
+  display: block;
+  font-size: 8px;
+  color: #8c9183;
+  text-transform: uppercase;
+  letter-spacing: 1.1px;
+  margin-top: 8px;
+}
+
+.memory-heart {
+  color: #798961;
+  padding-right: 30px;
+}
+
+.main-grid {
+  display: grid;
+  grid-template-columns: minmax(0,1.5fr) minmax(0,1fr);
+  gap: 60px;
+}
+
+.section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.section-heading .eyebrow {
+  font-size: 8px;
+  color: #7d8771;
+  letter-spacing: 1.3px;
+}
+
+.section-heading h2 {
+  font-family: var(--font-body);
+  font-size: 31px;
+  letter-spacing: -0.02em;
+  font-weight: 600;
+  margin-top: 5px;
+}
+
+.badge {
+  font-size: 8px;
+  border: 1px solid #dde0cf;
+  padding: 6px 9px;
+  border-radius: 20px;
+  white-space: nowrap;
+  color: #7b826b;
+}
+
+.section-description {
+  font-size: 11px;
+  color: #8a8e80;
+  margin-top: 11px;
+}
+
+.day-selector {
+  display: grid;
+  grid-template-columns: repeat(7,minmax(0,1fr));
+  gap: 7px;
+  margin: 25px 0 21px;
+}
+
+.day-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid #e3e4d9;
+  border-radius: 7px;
+  padding: 11px 0 3px;
+  background: transparent;
+  min-height: 88px;
+  transition: background .15s;
+}
+
+.day-button>span:first-child {
+  font-size: 8px;
+  letter-spacing: .5px;
+  color: #89917c;
+}
+
+.day-button strong {
+  font-family: var(--font-body);
+  font-size: 24px;
+  font-weight: 600;
+  margin-top: 5px;
+}
+
+.day-button .day-marker {
+  font-size: 13px;
+  line-height: 16px;
+  color: transparent;
+}
+
+.day-button.special-day .day-marker {
+  color: #829368;
+}
+
+.day-button:hover {
+  background: #eff1e7;
+}
+
+.day-button.selected {
+  background: #344b3b;
+  color: #fff;
+  border-color: #344b3b;
+}
+
+.day-button.selected>span:first-child {
+  color: #d6ddcd;
+}
+
+.day-button.selected .day-marker {
+  color: #d6ddcd;
+}
+
+.day-detail {
+  padding: 22px 23px 0;
+  border-radius: 9px;
+  background: #f0f1e7;
+  min-height: 291px;
+  border: 1px solid #e4e6d8;
+}
+
+.day-detail-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.day-detail-heading .eyebrow {
+  font-size: 8px;
+  color: #859172;
+}
+
+.day-detail h3 {
+  font-family: var(--font-body);
+  font-size: 25px;
+  letter-spacing: -0.02em;
+  font-weight: 600;
+  line-height: 1.2;
+  margin-top: 6px;
+}
+
+.day-doodle {
+  font-family: var(--font-body);
+  font-size: 44px;
+  line-height: 1;
+  color: #819266;
+}
+
+.timeline {
+  list-style: none;
+  margin: 23px 0 20px;
+  padding: 0;
+}
+
+.timeline li {
+  position: relative;
+  display: grid;
+  grid-template-columns: 84px 1fr;
+  gap: 11px;
+  padding: 0 0 25px 18px;
+}
+
+.timeline li:not(:last-child):before {
+  content: "";
+  position: absolute;
+  width: 1px;
+  left: 3px;
+  top: 10px;
+  bottom: 0;
+  background: #d4d9c6;
+}
+
+.timeline li:last-child {
+  padding-bottom: 3px;
+}
+
+.timeline-dot {
+  height: 7px;
+  width: 7px;
+  position: absolute;
+  left: 0;
+  top: 4px;
+  border-radius: 50%;
+  background: #a6b18e;
+  border: 2px solid #f0f1e7;
+  outline: 1px solid #a6b18e;
+}
+
+.activity-time {
+  font-size: 10px;
+  line-height: 1.6;
+  color: #777f6a;
+}
+
+.timeline h4 {
+  font-size: 11px;
+  line-height: 1.6;
+  font-weight: 500;
+}
+
+.timeline p {
+  font-size: 10px;
+  line-height: 1.75;
+  color: #7c846f;
+  margin-top: 4px;
+}
+
+.tentative-dot {
+  font-size: 7px;
+  display: inline-block;
+  border: 1px solid #d6dac8;
+  border-radius: 3px;
+  padding: 0 4px;
+  margin-left: 6px;
+  color: #788065;
+}
+
+.stay-note {
+  border-top: 1px solid #dce0d0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 0;
+  margin-top: 15px;
+}
+
+.stay-note span {
+  font-size: 7px;
+  letter-spacing: 1.2px;
+  color: #7b856d;
+}
+
+.stay-note strong {
+  font-size: 10px;
+  font-weight: 500;
+}
+
+.plan-footnote {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 8px;
+  line-height: 1.7;
+  gap: 13px;
+  color: #919686;
+  margin-top: 13px;
+}
+
+.plan-footnote a {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #6b7b56;
+  white-space: nowrap;
+}
+
+.travel-column>.section-heading {
+  margin-bottom: 20px;
+}
+
+.travel-column>.section-heading>svg {
+  color: #879471;
+  transform: rotate(10deg);
+}
+
+.flight-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: #eeefe6;
+  border: 1px solid #e4e5db;
+  border-radius: 6px;
+  padding: 4px;
+  margin-bottom: 13px;
+  gap: 4px;
+}
+
+.flight-tabs button {
+  background: transparent;
+  border: 0;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 10px 5px;
+  font-size: 10px;
+  gap: 4px;
+  color: #7e8772;
+}
+
+.flight-tabs button span {
+  font-size: 7px;
+  letter-spacing: 1px;
+}
+
+.flight-tabs button.active {
+  background: #fffefa;
+  box-shadow: 0 1px 4px #35422d0a;
+  color: #374e3b;
+}
+
+.flight-ticket {
+  background: #fffefa;
+  border: 1px solid #e4e4d8;
+  border-radius: 9px;
+  padding: 22px 22px 0;
+  box-shadow: 0 6px 14px -12px #62725133;
+}
+
+.ticket-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.airline {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #334b66;
+}
+
+.airline>span {
+  font-size: 9px;
+  font-weight: 400;
+  letter-spacing: .5px;
+  color: #8b9184;
+  margin-left: 5px;
+}
+
+.status-pill {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 8px;
+  color: #7c8f5e;
+  background: #f0f3e8;
+  border-radius: 20px;
+  padding: 5px 8px;
+  max-width: 110px;
+  overflow-wrap: anywhere;
+}
+
+.status-pill>span {
+  width: 4px;
+  height: 4px;
+  background: #93a875;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.ticket-route {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr 1fr;
+  align-items: center;
+  margin-top: 27px;
+  gap: 12px;
+}
+
+.ticket-route>div:last-child {
+  text-align: right;
+}
+
+.ticket-route .airport {
+  font-family: var(--font-body);
+  font-size: 36px;
+  letter-spacing: 0.015em;
+  line-height: 1;
+  font-weight: 600;
+}
+
+.ticket-route p:not(.airport) {
+  font-size: 8px;
+  color: #8d9583;
+  margin-top: 7px;
+}
+
+.flight-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #96a780;
+}
+
+.flight-line span {
+  flex: 1;
+  border-bottom: 1px dashed #cbd3bf;
+}
+
+.flight-line svg {
+  transform: rotate(40deg);
+  width: 16px;
+}
+
+.ticket-times {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 23px;
+  margin-bottom: 23px;
+}
+
+.ticket-times>div {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.ticket-times>div:last-child {
+  text-align: right;
+}
+
+.ticket-times strong {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.ticket-times span {
+  font-size: 8px;
+  color: #8a9280;
+}
+
+.ticket-bottom {
+  position: relative;
+  border-top: 1px dashed #daddcf;
+  margin: 0 -22px;
+  padding: 16px 22px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 8px;
+  color: #849075;
+  gap: 10px;
+}
+
+.ticket-bottom:before,.ticket-bottom:after {
+  content: "";
+  position: absolute;
+  top: -7px;
+  width: 13px;
+  height: 13px;
+  border: 1px solid #e4e4d8;
+  border-radius: 50%;
+  background: var(--background);
+}
+
+.ticket-bottom:before {
+  left: -7px;
+  border-left-color: transparent;
+  border-bottom-color: transparent;
+  transform: rotate(45deg);
+}
+
+.ticket-bottom:after {
+  right: -7px;
+  border-top-color: transparent;
+  border-right-color: transparent;
+  transform: rotate(45deg);
+}
+
+.ticket-status {
+  border-top: 1px solid #f0f0e7;
+  padding: 9px 0 13px;
+}
+
+.flight-status-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.flight-status-heading p {
+  font-size: 8px;
+  color: #909784;
+}
+
+.icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  background: transparent;
+  color: #738163;
+}
+
+.icon-button:hover {
+  background: #eff2e7;
+}
+
+.status-message,.live-details {
+  font-size: 8px;
+  line-height: 1.6;
+  color: #909784;
+}
+
+.live-details {
+  color: #53694b;
+  margin-bottom: 5px;
+}
+
+.flight-footnote {
+  font-size: 8px;
+  line-height: 1.7;
+  color: #939988;
+  margin: 10px 4px 18px;
+}
+
+.route-planner {
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  font-size: 10px;
+  margin-top: 32px;
+}
+
+.route-planner summary {
+  cursor: pointer;
+  padding: 16px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  list-style: none;
+  gap: 10px;
+}
+
+.route-planner summary::-webkit-details-marker {
+  display: none;
+}
+
+.route-planner summary>span {
+  font-size: 9px;
+  color: #8c9580;
+}
+
+.route-planner-content {
+  padding: 8px 0 24px;
+}
+
+.route-planner-content.has-map {
+  display: grid;
+  grid-template-columns: 1fr 1.35fr;
+  column-gap: 40px;
+  align-content: start;
+}
+
+.route-planner-content.has-map> :not(.route-map) {
+  grid-column: 1;
+}
+
+.route-planner-content>p {
+  color: #858f79;
+  line-height: 1.6;
+  margin-bottom: 13px;
+}
+
+.route-map {
+  grid-column: 2;
+  grid-row: 1 / span 5;
+  margin: 0;
+}
+
+.route-map iframe {
+  display: block;
+  width: 100%;
+  height: 320px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: #e8ebdf;
+}
+
+.route-map figcaption {
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 9px;
+  line-height: 1.6;
+}
+
+.route-planner-content>.route-preview-note {
+  margin-top: 12px;
+  margin-bottom: 0;
+}
+
+@media (max-width: 700px) {
+  .route-planner-content.has-map {
+    display: block;
+  }
+
+  .route-map {
+    margin: 0 0 20px;
+  }
+}
+
+.route-planner label {
+  display: block;
+  font-size: 9px;
+  margin: 12px 0 6px;
+}
+
+.route-planner input {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  border: 1px solid #d8ddcd;
+  border-radius: 4px;
+  background: #fffefa;
+  padding: 11px;
+  font-size: 11px;
+}
+
+.route-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12px;
+  gap: 10px;
+}
+
+.text-button {
+  border: 0;
+  background: transparent;
+  padding: 10px 0;
+  font-size: 10px;
+}
+
+.button-small {
+  font-size: 10px;
+  padding: 10px 13px;
+  min-height: 36px;
+}
+
+.stop-row {
+  display: flex;
+  margin-top: 9px;
+  gap: 8px;
+}
+
+.stop-row>button {
+  background: transparent;
+  border: 0;
+  font-size: 20px;
+  width: 24px;
+}
+
+.route-result {
+  background: #eaf0df;
+  border-radius: 5px;
+  padding: 12px;
+  margin-top: 12px;
+}
+
+.route-result strong {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.route-result p,.route-error {
+  margin-top: 6px;
+  line-height: 1.7;
+  font-size: 10px;
+  color: #758164;
+}
+
+.maps-link {
+  display: inline-block;
+  font-size: 10px;
+  text-decoration: underline;
+  margin-top: 12px;
+  color: #60764b;
+}
+
+.anniversary-banner {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  background: #edeedd;
+  border: 1px solid #e0e3cd;
+  border-radius: 8px;
+  margin-top: 52px;
+  padding: 29px 35px;
+}
+
+.anniversary-icon {
+  width: 63px;
+  height: 63px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #cbd4b7;
+  border-radius: 50%;
+  color: #7f9062;
+  flex-shrink: 0;
+  transform: rotate(-10deg);
+}
+
+.anniversary-banner .eyebrow {
+  font-size: 8px;
+  color: #8a9675;
+  letter-spacing: 1.4px;
+}
+
+.anniversary-banner h2 {
+  font-family: var(--font-body);
+  font-size: 27px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin: 7px 0;
+}
+
+.anniversary-banner p:last-child {
+  font-size: 10px;
+  color: #8c947c;
+  line-height: 1.7;
+}
+
+.anniversary-one {
+  font-family: var(--font-body);
+  font-size: 58px;
+  line-height: 1;
+  color: #acb794;
+  margin-left: auto;
+  text-align: center;
+  flex-shrink: 0;
+  font-weight: 500;
+  letter-spacing: -0.025em;
+}
+
+.anniversary-one span {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 7px;
+  letter-spacing: 1.5px;
+  margin-top: 7px;
+}
+
+.site-footer {
+  min-height: 100px;
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  border-top: 1px solid var(--line);
+  margin-bottom: 10px;
+}
+
+.site-footer .wordmark {
+  font-size: 27px;
+  letter-spacing: -0.04em;
+  font-weight: 650;
+}
+
+.site-footer .wordmark>span {
+  font-size: 20px;
+}
+
+.site-footer .wordmark .wordmark-dot {
+  font-size: 29px;
+}
+
+.site-footer p {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-style: normal;
+  color: #9ca38e;
+  margin-left: 15px;
+}
+
+.site-footer>a:last-child {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 8px;
+  color: #939f80;
+}
+
+.skip-link {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  z-index: 100;
+  transform: translateY(-150%);
+  background: #344b3b;
+  color: #fff;
+  padding: 12px;
+  border-radius: 4px;
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0,0,0,0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+@media (min-width:1500px) {
+  .wrap {
+    max-width: 1280px;
+  }
+
+  .hero {
+    padding-top: 75px;
+    padding-bottom: 49px;
+  }
+
+  .hero h1 {
+    font-size: 84px;
+    letter-spacing: -0.035em;
+  }
+}
+
+@media (max-width:1000px) {
+  .wrap {
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+
+  .hero {
+    gap: 30px;
+  }
+
+  .hero h1 {
+    font-size: 64px;
+    letter-spacing: -0.035em;
+  }
+
+  .main-grid {
+    gap: 32px;
+  }
+
+  .countdown-numbers {
+    gap: 23px;
+    padding-right: 0;
+  }
+
+  .countdown-numbers>div:not(:last-child):after {
+    right: -14px;
+  }
+
+  .countdown-numbers strong {
+    font-size: 41px;
+    letter-spacing: -0.025em;
+  }
+
+  .ticket-route {
+    gap: 6px;
+  }
+
+  .ticket-route .airport {
+    font-size: 32px;
+    letter-spacing: 0.015em;
+  }
+
+  .postcard-title {
+    font-size: 30px;
+    letter-spacing: -0.02em;
+  }
+
+  .plan-footnote {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .anniversary-banner {
+    padding: 27px;
+  }
+
+  .timeline li {
+    grid-template-columns: 72px 1fr;
+  }
+}
+
+@media (max-width:760px) {
+  .wrap {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  .site-header {
+    height: 83px;
+    gap: 20px;
+  }
+
+  .site-header nav {
+    margin-left: auto;
+    gap: 21px;
+    font-size: 11px;
+  }
+
+  .header-date {
+    display: none;
+  }
+
+  .hero {
+    padding-top: 43px;
+    padding-bottom: 25px;
+    gap: 27px;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .hero h1 {
+    font-size: 49px;
+    letter-spacing: -0.035em;
+    margin: 17px 0;
+  }
+
+  .hero .eyebrow {
+    font-size: 7px;
+    letter-spacing: 1px;
+  }
+
+  .hero-description {
+    font-size: 11px;
+  }
+
+  .hero-dates {
+    font-size: 9px;
+    gap: 5px;
+    flex-wrap: wrap;
+    margin: 18px 0;
+  }
+
+  .hero-actions {
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .hero-actions .button {
+    font-size: 10px;
+    padding: 10px 11px;
+  }
+
+  .postcard {
+    padding: 16px 13px 12px;
+  }
+
+  .postcard-top {
+    font-size: 5px;
+    letter-spacing: 1px;
+  }
+
+  .postcard-title {
+    font-size: 25px;
+    letter-spacing: -0.02em;
+  }
+
+  .postcard-bottom>span:first-child {
+    font-size: 10px;
+  }
+
+  .postcard-stamp {
+    min-width: 45px;
+    min-height: 41px;
+    font-size: 5px;
+  }
+
+  .countdown-band {
+    padding: 23px 0;
+    margin-bottom: 36px;
+    gap: 20px;
+  }
+
+  .countdown-label h2 {
+    font-size: 19px;
+    letter-spacing: -0.02em;
+  }
+
+  .countdown-label>p:last-child {
+    font-size: 8px;
+    max-width: 225px;
+  }
+
+  .countdown-numbers {
+    gap: 14px;
+  }
+
+  .countdown-numbers>div {
+    min-width: 37px;
+  }
+
+  .countdown-numbers strong {
+    font-size: 34px;
+    letter-spacing: -0.025em;
+  }
+
+  .countdown-numbers>div:not(:last-child):after {
+    font-size: 22px;
+    right: -10px;
+  }
+
+  .countdown-numbers span {
+    font-size: 6px;
+    letter-spacing: .8px;
+  }
+
+  .main-grid {
+    grid-template-columns: 1fr;
+    gap: 37px;
+  }
+
+  .section-heading h2 {
+    font-size: 31px;
+    letter-spacing: -0.02em;
+  }
+
+  .day-selector {
+    gap: 9px;
+    margin-top: 21px;
+  }
+
+  .day-button {
+    min-height: 86px;
+  }
+
+  .day-detail {
+    min-height: 265px;
+  }
+
+  .timeline li {
+    grid-template-columns: 110px 1fr;
+    padding-bottom: 26px;
+  }
+
+  .timeline h4 {
+    font-size: 12px;
+  }
+
+  .timeline p {
+    font-size: 11px;
+  }
+
+  .activity-time {
+    font-size: 11px;
+  }
+
+  .plan-footnote {
+    flex-direction: row;
+    font-size: 8px;
+  }
+
+  .travel-column {
+    max-width: none;
+  }
+
+  .ticket-route {
+    margin-top: 24px;
+    grid-template-columns: 1fr 1.8fr 1fr;
+  }
+
+  .ticket-route .airport {
+    font-size: 42px;
+    letter-spacing: 0.015em;
+  }
+
+  .ticket-route p:not(.airport) {
+    font-size: 10px;
+  }
+
+  .ticket-times strong {
+    font-size: 18px;
+  }
+
+  .ticket-times span {
+    font-size: 10px;
+  }
+
+  .ticket-bottom {
+    font-size: 10px;
+  }
+
+  .ticket-status p {
+    font-size: 9px;
+  }
+
+  .flight-tabs button {
+    font-size: 11px;
+  }
+
+  .flight-tabs button span {
+    font-size: 8px;
+  }
+
+  .airline {
+    font-size: 23px;
+  }
+
+  .status-pill {
+    font-size: 9px;
+  }
+
+  .route-planner {
+    font-size: 12px;
+  }
+
+  .route-planner summary>span {
+    font-size: 10px;
+  }
+
+  .anniversary-banner {
+    margin-top: 34px;
+    gap: 17px;
+    padding: 24px 19px;
+  }
+
+  .anniversary-banner h2 {
+    font-size: 24px;
+    letter-spacing: -0.02em;
+  }
+
+  .anniversary-banner p:last-child {
+    font-size: 9px;
+  }
+
+  .anniversary-one {
+    font-size: 45px;
+  }
+
+  .anniversary-icon {
+    height: 45px;
+    width: 45px;
+  }
+
+  .anniversary-icon svg {
+    width: 25px;
+  }
+
+  .site-footer {
+    min-height: 90px;
+    gap: 14px;
+  }
+
+  .site-footer p {
+    margin-left: 5px;
+    font-size: 11px;
+  }
+
+  .site-footer>a:last-child {
+    font-size: 7px;
+  }
+}
+
+@media (max-width:520px) {
+  .wrap {
+    padding-left: 21px;
+    padding-right: 21px;
+  }
+
+  .site-header nav {
+    gap: 16px;
+    font-size: 10px;
+  }
+
+  .wordmark {
+    font-size: 33px;
+    letter-spacing: -0.04em;
+  }
+
+  .hero {
+    grid-template-columns: 1fr;
+    padding-top: 34px;
+    gap: 21px;
+  }
+
+  .hero h1 {
+    font-size: 65px;
+    letter-spacing: -0.035em;
+    margin: 17px 0 20px;
+  }
+
+  .hero .eyebrow {
+    font-size: 8px;
+  }
+
+  .hero-description {
+    font-size: 12px;
+    max-width: 310px;
+  }
+
+  .hero-dates {
+    font-size: 10px;
+    margin: 20px 0;
+  }
+
+  .hero-actions {
+    flex-wrap: nowrap;
+    gap: 10px;
+  }
+
+  .hero-actions .button {
+    font-size: 10px;
+    padding: 12px 14px;
+  }
+
+  .calendar-feedback {
+    min-height: 0;
+  }
+
+  .calendar-feedback:empty {
+    display: none;
+  }
+
+  .postcard {
+    margin: 15px 5px 20px 7px;
+    padding: 18px 17px 13px;
+  }
+
+  .postcard-top {
+    font-size: 7px;
+  }
+
+  .postcard-title {
+    font-size: 33px;
+    margin: 12px 0;
+    letter-spacing: -0.02em;
+  }
+
+  .postcard-bottom>span:first-child {
+    font-size: 13px;
+  }
+
+  .postcard-stamp {
+    min-width: 53px;
+    font-size: 6px;
+  }
+
+  .countdown-band {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 23px;
+    padding: 23px 0 28px;
+    margin-bottom: 35px;
+  }
+
+  .countdown-label h2 {
+    font-size: 24px;
+    margin: 7px 0 8px;
+    letter-spacing: -0.02em;
+  }
+
+  .countdown-label>p:last-child {
+    max-width: none;
+    font-size: 8px;
+  }
+
+  .countdown-numbers {
+    width: 100%;
+    justify-content: space-between;
+    padding-right: 10px;
+    padding-left: 5px;
+    gap: 20px;
+  }
+
+  .countdown-numbers>div {
+    min-width: 49px;
+  }
+
+  .countdown-numbers strong {
+    font-size: 43px;
+    letter-spacing: -0.025em;
+  }
+
+  .countdown-numbers>div:not(:last-child):after {
+    right: -25px;
+    top: 6px;
+    font-size: 26px;
+  }
+
+  .countdown-numbers span {
+    font-size: 7px;
+  }
+
+  .section-heading h2 {
+    font-size: 29px;
+    letter-spacing: -0.02em;
+  }
+
+  .section-heading .eyebrow {
+    font-size: 7px;
+    letter-spacing: 1px;
+  }
+
+  .badge {
+    font-size: 7px;
+    padding: 5px 7px;
+  }
+
+  .day-selector {
+    gap: 5px;
+    margin-bottom: 15px;
+  }
+
+  .day-button {
+    min-height: 78px;
+    padding-top: 10px;
+  }
+
+  .day-button strong {
+    font-size: 23px;
+  }
+
+  .day-button>span:first-child {
+    font-size: 7px;
+  }
+
+  .day-detail {
+    padding: 20px 17px 0;
+    min-height: 280px;
+  }
+
+  .day-detail h3 {
+    font-size: 24px;
+    letter-spacing: -0.02em;
+  }
+
+  .timeline li {
+    grid-template-columns: 83px 1fr;
+    gap: 7px;
+    padding-left: 15px;
+  }
+
+  .timeline h4 {
+    font-size: 11px;
+  }
+
+  .timeline p {
+    font-size: 10px;
+  }
+
+  .activity-time {
+    font-size: 9px;
+  }
+
+  .plan-footnote {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .anniversary-banner {
+    gap: 13px;
+    align-items: flex-start;
+    padding: 23px 18px;
+  }
+
+  .anniversary-banner h2 {
+    font-size: 24px;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+
+  .anniversary-icon {
+    height: 34px;
+    width: 34px;
+    margin-top: 4px;
+  }
+
+  .anniversary-icon svg {
+    width: 21px;
+  }
+
+  .anniversary-one {
+    display: none;
+  }
+
+  .site-footer {
+    flex-wrap: wrap;
+    gap: 12px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+
+  .site-footer p {
+    font-size: 12px;
+  }
+
+  .site-footer>a:last-child {
+    width: 100%;
+    justify-content: center;
+    margin: 0;
+    font-size: 8px;
+  }
+}
+
+@media (max-width:360px) {
+  .wrap {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .hero h1 {
+    font-size: 60px;
+    letter-spacing: -0.035em;
+  }
+
+  .hero-actions {
+    gap: 6px;
+  }
+
+  .hero-actions .button {
+    font-size: 9px;
+    padding: 11px;
+  }
+
+  .countdown-numbers>div:not(:last-child):after {
+    right: -20px;
+  }
+
+  .timeline li {
+    grid-template-columns: 67px 1fr;
+  }
+
+  .badge {
+    font-size: 6px;
+  }
+
+  .site-header nav {
+    gap: 12px;
+  }
+}
+
+@media (prefers-reduced-motion:reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,*:before,*:after {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .button:hover {
+    transform: none;
+  }
+}
+
+.open-day-note {
+  font-size: 12px;
+  line-height: 1.8;
+  color: #7c846f;
+  padding: 22px 0 32px;
+  max-width: 290px;
+}
+
 /* Keep supporting details readable on compact screens. */
-.hero-description{font-size:14px}.hero-dates,.hero-actions .button{font-size:12px}.section-description{font-size:13px}.activity-time{font-size:11px}.timeline h4{font-size:13px}.timeline p{font-size:12px}.plan-footnote{font-size:10px}.ticket-route p:not(.airport),.ticket-times span,.ticket-bottom,.flight-status-heading p,.status-message,.live-details,.flight-footnote{font-size:11px}.flight-tabs button{font-size:12px}.flight-tabs button span,.airline>span,.status-pill{font-size:10px}.route-planner,.route-planner summary>span,.route-planner label,.text-button,.maps-link,.button-small{font-size:12px}.route-result p,.route-error{font-size:11px}.route-planner input{font-size:14px}.anniversary-banner p:last-child{font-size:12px}.countdown-label>p:last-child{font-size:11px}.day-button>span:first-child{font-size:10px}.tentative-dot{font-size:9px}.badge{font-size:10px}.stay-note strong{font-size:12px}.stay-note span{font-size:9px}.site-footer>a:last-child{font-size:10px}.site-footer{margin-top:45px}
-@media(max-width:520px){.hero-actions .button{font-size:11px;padding:12px}.hero-description{font-size:13px}.hero-dates{font-size:11px}.timeline li{grid-template-columns:85px 1fr}.timeline h4{font-size:12px}.timeline p,.activity-time{font-size:11px}.ticket-bottom{font-size:10px}.badge{font-size:8px}.day-button>span:first-child{font-size:9px}.anniversary-banner p:last-child{font-size:11px}.plan-footnote{font-size:10px}}
 
-.hero-description,.section-description,.activity-time,.timeline p,.plan-footnote,.ticket-route p:not(.airport),.ticket-times span,.ticket-bottom,.flight-status-heading p,.status-message,.live-details,.flight-footnote,.route-planner-content>p,.route-planner summary>span,.anniversary-banner p:last-child,.countdown-label>p:last-child{color:#69725f}
+.hero-description {
+  font-size: 14px;
+}
+
+.hero-dates,.hero-actions .button {
+  font-size: 12px;
+}
+
+.section-description {
+  font-size: 13px;
+}
+
+.activity-time {
+  font-size: 11px;
+}
+
+.timeline h4 {
+  font-size: 13px;
+}
+
+.timeline p {
+  font-size: 12px;
+}
+
+.plan-footnote {
+  font-size: 10px;
+}
+
+.ticket-route p:not(.airport),.ticket-times span,.ticket-bottom,.flight-status-heading p,.status-message,.live-details,.flight-footnote {
+  font-size: 11px;
+}
+
+.flight-tabs button {
+  font-size: 12px;
+}
+
+.flight-tabs button span,.airline>span,.status-pill {
+  font-size: 10px;
+}
+
+.route-planner,.route-planner summary>span,.route-planner label,.text-button,.maps-link,.button-small {
+  font-size: 12px;
+}
+
+.route-result p,.route-error {
+  font-size: 11px;
+}
+
+.route-planner input {
+  font-size: 14px;
+}
+
+.anniversary-banner p:last-child {
+  font-size: 12px;
+}
+
+.countdown-label>p:last-child {
+  font-size: 11px;
+}
+
+.day-button>span:first-child {
+  font-size: 10px;
+}
+
+.tentative-dot {
+  font-size: 9px;
+}
+
+.badge {
+  font-size: 10px;
+}
+
+.stay-note strong {
+  font-size: 12px;
+}
+
+.stay-note span {
+  font-size: 9px;
+}
+
+.site-footer>a:last-child {
+  font-size: 10px;
+}
+
+.site-footer {
+  margin-top: 45px;
+}
+
+@media (max-width:520px) {
+  .hero-actions .button {
+    font-size: 11px;
+    padding: 12px;
+  }
+
+  .hero-description {
+    font-size: 13px;
+  }
+
+  .hero-dates {
+    font-size: 11px;
+  }
+
+  .timeline li {
+    grid-template-columns: 85px 1fr;
+  }
+
+  .timeline h4 {
+    font-size: 12px;
+  }
+
+  .timeline p,.activity-time {
+    font-size: 11px;
+  }
+
+  .ticket-bottom {
+    font-size: 10px;
+  }
+
+  .badge {
+    font-size: 8px;
+  }
+
+  .day-button>span:first-child {
+    font-size: 9px;
+  }
+
+  .anniversary-banner p:last-child {
+    font-size: 11px;
+  }
+
+  .plan-footnote {
+    font-size: 10px;
+  }
+}
+
+.hero-description,.section-description,.activity-time,.timeline p,.plan-footnote,.ticket-route p:not(.airport),.ticket-times span,.ticket-bottom,.flight-status-heading p,.status-message,.live-details,.flight-footnote,.route-planner-content>p,.route-planner summary>span,.anniversary-banner p:last-child,.countdown-label>p:last-child {
+  color: #69725f;
+}

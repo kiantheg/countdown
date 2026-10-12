@@ -16,7 +16,7 @@ The booked schedule and countdown work without API access. Optional live flight 
 
 The flight card checks automatically every five minutes from 48 hours before departure through 12 hours after scheduled arrival. Unavailable updates fall back to the booking. All flight timestamps include explicit offsets; activity times use America/Los_Angeles. The return lands November 4. The calendar export includes the visit, both flights, and anniversary.
 
-The outbound airport transfer defaults to the requested 710 Bowdoin Ln destination. Booking references, ticket numbers, and account details are not included.
+The outbound airport transfer defaults to 710 Bowdoin St, Stanford, CA 94305 (the full street address listed by Stanford). Its Google Maps share embed previews the direct SFO route without an API key; edited destinations and stops open through a separate Google Maps directions link. Preview travel times describe current conditions, not the trip date. Optional drive estimates and autocomplete require billing and the Routes / Places APIs enabled for the server key. Booking references, ticket numbers, and account details are not included.
 
 ## Hosting
 

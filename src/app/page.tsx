@@ -110,14 +110,16 @@ export default function Home() {
   const [calendarMessage, setCalendarMessage] = useState("");
 
   useEffect(() => {
-    const current = Date.now();
-    setNow(current);
-    const today = new Intl.DateTimeFormat("en-CA", { timeZone: trip.timeZone, year: "numeric", month: "2-digit", day: "2-digit" }).format(current);
-    const index = itinerary.findIndex(day => day.date === today);
-    if (index >= 0) setSelectedDay(index);
-    if (current > Date.parse(flights[0].arrival.at)) setSelectedFlight(1);
+    const frame = window.requestAnimationFrame(() => {
+      const current = Date.now();
+      setNow(current);
+      const today = new Intl.DateTimeFormat("en-CA", { timeZone: trip.timeZone, year: "numeric", month: "2-digit", day: "2-digit" }).format(current);
+      const index = itinerary.findIndex(day => day.date === today);
+      if (index >= 0) setSelectedDay(index);
+      if (current > Date.parse(flights[0].arrival.at)) setSelectedFlight(1);
+    });
     const timer = window.setInterval(() => setNow(Date.now()), 1000);
-    return () => window.clearInterval(timer);
+    return () => { window.cancelAnimationFrame(frame); window.clearInterval(timer); };
   }, []);
 
   function downloadCalendar() {
@@ -189,7 +191,7 @@ export default function Home() {
             {day.items.length === 0 && <p className="open-day-note">No activities scheduled yet. Halloween plans are still open.</p>}<ol className="timeline">{day.items.map((item, i) => <li key={i}><span className="timeline-dot" /><div className="activity-time">{item.time ?? "Anytime"}</div><div><h4>{item.title}{item.tentative && <span className="tentative-dot">To decide</span>}</h4>{item.note && <p>{item.note}</p>}</div></li>)}</ol>
             {day.stay && <div className="stay-note"><span>STAYING</span><strong>{day.stay}</strong></div>}
           </div>
-          <div className="plan-footnote"><span>Activity times are Pacific. Plans last checked Oct 12.</span><a href={trip.planUrl} target="_blank" rel="noreferrer">Open trip doc <Icon name="external" size={13} /></a></div>
+          <div className="plan-footnote"><span>Pacific time · Saved Oct 12, 2026 · Not synced automatically.</span><a href={trip.planUrl} target="_blank" rel="noreferrer">View latest Google Doc <Icon name="external" size={13} /></a></div>
         </section>
 
         <aside className="travel-column" id="flights" aria-labelledby="flights-title">
@@ -197,9 +199,9 @@ export default function Home() {
           <div className="flight-tabs" role="group" aria-label="Select flight"><button aria-pressed={selectedFlight === 0} className={selectedFlight === 0 ? "active" : ""} onClick={() => setSelectedFlight(0)}>To California <span>OCT 28</span></button><button aria-pressed={selectedFlight === 1} className={selectedFlight === 1 ? "active" : ""} onClick={() => setSelectedFlight(1)}>Back to New York <span>NOV 3</span></button></div>
           <div className="flight-ticket"><FlightCard key={flights[selectedFlight].id} flight={flights[selectedFlight]} now={now} /></div>
           <p className="flight-footnote">Flight times are local to each airport. The trip crosses the November 1 time change.</p>
-          <RoutePlanner key={flights[selectedFlight].id} flight={flights[selectedFlight]} />
         </aside>
       </div>
+      <RoutePlanner key={flights[selectedFlight].id} flight={flights[selectedFlight]} />
 
       <section className="anniversary-banner" aria-labelledby="anniversary-title"><div className="anniversary-icon"><Icon name="calendar" size={30} /></div><div><p className="eyebrow">SUNDAY, NOVEMBER 1</p><h2 id="anniversary-title">One-year anniversary</h2><p>Becca is planning dinner. Time and location are still to be confirmed.</p></div><span className="anniversary-one" aria-hidden="true">01<span>NOVEMBER</span></span></section>
 
