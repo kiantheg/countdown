@@ -34,4 +34,4 @@ The outbound airport transfer defaults to 710 Bowdoin St, Stanford, CA 94305 (th
 
 ## Hosting
 
-The existing Vercel Git integration deploys `main` to https://countdown-eta-three.vercel.app.
+The existing Vercel Git integration deploys `main` to https://kian-and-becca.vercel.app. This free address is connected to the project's Production environment, so future deployments and plan updates use it automatically. The original https://countdown-eta-three.vercel.app address also remains available.
