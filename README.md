@@ -1,36 +1,23 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# California trip planner
 
-## Getting Started
+A Next.js trip dashboard for Kian’s October 28–November 3, 2026 visit to Becca.
 
-First, run the development server:
+## Development
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Trip dates, confirmed flight schedules, itinerary entries, and calendar export live in `src/lib/trip.ts`. The current plan is a snapshot of the linked Google Doc as of October 12; edits to the Doc do not automatically sync.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+The booked schedule and countdown work without API access. Optional live flight updates use `RAPIDAPI_KEY` (AeroDataBox), with optional `RAPIDAPI_AERODATABOX_HOST`. Drive estimates and place suggestions use `GOOGLE_MAPS_API_KEY`. Keep these in server environment variables, never in client code.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The flight card checks automatically every five minutes from 48 hours before departure through 12 hours after scheduled arrival. Unavailable updates fall back to the booking. All flight timestamps include explicit offsets; activity times use America/Los_Angeles. The return lands November 4. The calendar export includes the visit, both flights, and anniversary.
 
-## Learn More
+The outbound airport transfer defaults to the requested 710 Bowdoin Ln destination. Booking references, ticket numbers, and account details are not included.
 
-To learn more about Next.js, take a look at the following resources:
+## Hosting
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The existing Vercel Git integration deploys `main` to https://countdown-eta-three.vercel.app.
