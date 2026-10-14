@@ -58,7 +58,7 @@ export async function GET(request: NextRequest) {
   const cleaned = number?.replace(/\s+/g, "").toUpperCase() ?? "";
   if (!/^(?:[A-Z][A-Z0-9]|[0-9][A-Z]|[A-Z]{3})\d{1,4}[A-Z]?$/.test(cleaned)) {
     return NextResponse.json(
-      { error: "Provide a flight number like B6515." },
+      { error: "Provide a flight number like B6615." },
       { status: 400 }
     );
   }

@@ -55,7 +55,7 @@ export const trip = {
 export const flights: FlightLeg[] = [
   {
     id: "outbound",
-    number: "B6515",
+    number: "B6615",
     airline: "JetBlue",
     departure: {
       iata: "JFK",
