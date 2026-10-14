@@ -1,6 +1,6 @@
 {
-  "sourceModifiedAt": "2026-10-12T20:57:59.782Z",
-  "syncedAt": "2026-10-12T21:45:20.000Z",
+  "sourceModifiedAt": "2026-10-14T02:41:42.819Z",
+  "syncedAt": "2026-10-14T03:17:59.000Z",
   "days": [
     {
       "date": "2026-10-28",
@@ -30,6 +30,9 @@
           "title": "Becca has class"
         },
         {
+          "title": "Vote"
+        },
+        {
           "title": "Double date?",
           "tentative": true
         },
@@ -50,6 +53,11 @@
         {
           "time": "1:30–3:20 PM",
           "title": "Go to class with Becca"
+        },
+        {
+          "time": "After class",
+          "title": "Margaritas with class friends",
+          "tentative": true
         },
         {
           "title": "SNu Halloween party or SF bar crawl",
@@ -92,6 +100,10 @@
         {
           "time": "11:30 AM–12:50 PM",
           "title": "Go to class with Becca"
+        },
+        {
+          "title": "Lunch with Robby",
+          "tentative": true
         },
         {
           "time": "2:15–3:45 PM",
