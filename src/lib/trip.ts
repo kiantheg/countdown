@@ -50,7 +50,7 @@ export const trip = {
     "https://docs.google.com/document/d/1A24kcHDnDTgx_MNiKILdOdaSXqjE1Fgh0CGSzO0oZ-Q/edit?usp=drivesdk",
 } as const;
 
-// Scheduled times verified against the JetBlue itinerary. UTC offsets change
+// Scheduled times verified against JetBlue's October 14, 2026 trip email. UTC offsets change
 // between the outbound and return journeys when daylight saving time ends.
 export const flights: FlightLeg[] = [
   {
@@ -62,14 +62,14 @@ export const flights: FlightLeg[] = [
       city: "New York",
       timeZone: "America/New_York",
       terminal: "5",
-      at: "2026-10-28T20:15:00-04:00",
+      at: "2026-10-28T17:55:00-04:00",
     },
     arrival: {
       iata: "SFO",
       city: "San Francisco",
       timeZone: "America/Los_Angeles",
       terminal: "1",
-      at: "2026-10-28T23:58:00-07:00",
+      at: "2026-10-28T21:41:00-07:00",
     },
   },
   {

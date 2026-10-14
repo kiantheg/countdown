@@ -136,7 +136,9 @@ export default function Home() {
   }
 
   const phase = now === null ? "upcoming" : getTripPhase(now);
-  const target = phase === "upcoming" ? flights[0].arrival.at : phase === "together" ? flights[1].departure.at : flights[1].arrival.at;
+  const targetEndpoint = phase === "upcoming" ? flights[0].arrival : phase === "together" ? flights[1].departure : flights[1].arrival;
+  const target = targetEndpoint.at;
+  const targetLabel = `${shortDate(target, targetEndpoint.timeZone)}, ${localTime(target, targetEndpoint.timeZone)} ${targetEndpoint.iata === "JFK" ? "ET" : "PT"}`;
   const countdown = now === null ? null : formatCountdown(Date.parse(target) - now);
   const day = plan.days[selectedDay];
   const anniversary = plan.days.find(day => day.date === "2026-11-01");
@@ -177,7 +179,7 @@ export default function Home() {
       </section>
 
       <section className="countdown-band" aria-label="Trip countdown">
-        <div className="countdown-label"><p className="eyebrow">{phase === "complete" ? "OCTOBER 2026" : "THE COUNTDOWN"}</p><h2>{phaseTitle}<span>.</span></h2><p>{phase === "upcoming" ? "To your scheduled SFO arrival · Oct 28, 11:58 PM PT" : phase === "together" ? "Until your return flight · Nov 3, 10:56 PM PT" : phase === "homeward" ? "Scheduled arrival · Nov 4, 7:24 AM ET" : "October 28 – November 3, 2026"}</p></div>
+        <div className="countdown-label"><p className="eyebrow">{phase === "complete" ? "OCTOBER 2026" : "THE COUNTDOWN"}</p><h2>{phaseTitle}<span>.</span></h2><p>{phase === "upcoming" ? `To your scheduled SFO arrival · ${targetLabel}` : phase === "together" ? `Until your return flight · ${targetLabel}` : phase === "homeward" ? `Scheduled arrival · ${targetLabel}` : "October 28 – November 3, 2026"}</p></div>
         {phase !== "complete" ? <div className="countdown-numbers" aria-label={countdown ? `${countdown.days} days, ${countdown.hours} hours, ${countdown.minutes} minutes, ${countdown.seconds} seconds` : "Loading countdown"}>
           {(["days", "hours", "minutes", "seconds"] as const).map(unit => <div key={unit}><strong>{countdown ? String(countdown[unit]).padStart(2, "0") : "—"}</strong><span>{unit}</span></div>)}
         </div> : <div className="memory-heart"><Icon name="check" size={52} /></div>}

@@ -8,7 +8,7 @@
       "stay": "KKG",
       "items": [
         {
-          "time": "8:15 PM ET → 11:58 PM PT",
+          "time": "5:55 PM ET → 9:41 PM PT",
           "title": "New York → San Francisco",
           "note": "JetBlue B6615 · JFK to SFO"
         }
@@ -22,7 +22,7 @@
         {
           "time": "After arrival",
           "title": "In-N-Out",
-          "note": "The plan says midnight; timing is flexible after the 11:58 PM landing and airport transfer.",
+          "note": "The plan says midnight; timing is flexible after landing and the airport transfer.",
           "tentative": true
         },
         {
