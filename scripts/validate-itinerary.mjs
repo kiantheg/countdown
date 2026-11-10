@@ -12,7 +12,7 @@ try {
   if (statSync(path).size > MAX_FILE_BYTES) throw new Error("Itinerary snapshot exceeds 256 KiB.");
   const snapshot = JSON.parse(readFileSync(path, "utf8"));
   validatePlan(snapshot);
-  console.log("Itinerary valid: all seven trip dates and snapshot metadata checked.");
+  console.log("Itinerary valid: all five trip dates and snapshot metadata checked.");
 } catch (error) {
   console.error(error instanceof Error ? error.message : "Could not validate itinerary snapshot.");
   process.exitCode = 1;

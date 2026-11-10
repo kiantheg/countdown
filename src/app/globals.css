@@ -442,7 +442,7 @@ p,h1,h2,h3,h4 {
 
 .day-selector {
   display: grid;
-  grid-template-columns: repeat(7,minmax(0,1fr));
+  grid-template-columns: repeat(5,minmax(0,1fr));
   gap: 7px;
   margin: 25px 0 21px;
 }
@@ -1064,7 +1064,7 @@ p,h1,h2,h3,h4 {
   color: #60764b;
 }
 
-.anniversary-banner {
+.onward-banner {
   display: flex;
   align-items: center;
   gap: 25px;
@@ -1075,7 +1075,7 @@ p,h1,h2,h3,h4 {
   padding: 29px 35px;
 }
 
-.anniversary-icon {
+.onward-icon {
   width: 63px;
   height: 63px;
   display: flex;
@@ -1088,13 +1088,13 @@ p,h1,h2,h3,h4 {
   transform: rotate(-10deg);
 }
 
-.anniversary-banner .eyebrow {
+.onward-banner .eyebrow {
   font-size: 8px;
   color: #8a9675;
   letter-spacing: 1.4px;
 }
 
-.anniversary-banner h2 {
+.onward-banner h2 {
   font-family: var(--font-body);
   font-size: 27px;
   font-weight: 600;
@@ -1102,13 +1102,13 @@ p,h1,h2,h3,h4 {
   margin: 7px 0;
 }
 
-.anniversary-banner p:last-child {
+.onward-banner p:last-child {
   font-size: 10px;
   color: #8c947c;
   line-height: 1.7;
 }
 
-.anniversary-one {
+.onward-date {
   font-family: var(--font-body);
   font-size: 58px;
   line-height: 1;
@@ -1120,7 +1120,7 @@ p,h1,h2,h3,h4 {
   letter-spacing: -0.025em;
 }
 
-.anniversary-one span {
+.onward-date span {
   display: block;
   font-family: var(--font-body);
   font-size: 7px;
@@ -1257,7 +1257,7 @@ p,h1,h2,h3,h4 {
     gap: 4px;
   }
 
-  .anniversary-banner {
+  .onward-banner {
     padding: 27px;
   }
 
@@ -1492,31 +1492,31 @@ p,h1,h2,h3,h4 {
     font-size: 10px;
   }
 
-  .anniversary-banner {
+  .onward-banner {
     margin-top: 34px;
     gap: 17px;
     padding: 24px 19px;
   }
 
-  .anniversary-banner h2 {
+  .onward-banner h2 {
     font-size: 24px;
     letter-spacing: -0.02em;
   }
 
-  .anniversary-banner p:last-child {
+  .onward-banner p:last-child {
     font-size: 9px;
   }
 
-  .anniversary-one {
+  .onward-date {
     font-size: 45px;
   }
 
-  .anniversary-icon {
+  .onward-icon {
     height: 45px;
     width: 45px;
   }
 
-  .anniversary-icon svg {
+  .onward-icon svg {
     width: 25px;
   }
 
@@ -1732,29 +1732,29 @@ p,h1,h2,h3,h4 {
     gap: 6px;
   }
 
-  .anniversary-banner {
+  .onward-banner {
     gap: 13px;
     align-items: flex-start;
     padding: 23px 18px;
   }
 
-  .anniversary-banner h2 {
+  .onward-banner h2 {
     font-size: 24px;
     line-height: 1.2;
     letter-spacing: -0.02em;
   }
 
-  .anniversary-icon {
+  .onward-icon {
     height: 34px;
     width: 34px;
     margin-top: 4px;
   }
 
-  .anniversary-icon svg {
+  .onward-icon svg {
     width: 21px;
   }
 
-  .anniversary-one {
+  .onward-date {
     display: none;
   }
 
@@ -1891,7 +1891,7 @@ p,h1,h2,h3,h4 {
   font-size: 14px;
 }
 
-.anniversary-banner p:last-child {
+.onward-banner p:last-child {
   font-size: 12px;
 }
 
@@ -1965,7 +1965,7 @@ p,h1,h2,h3,h4 {
     font-size: 9px;
   }
 
-  .anniversary-banner p:last-child {
+  .onward-banner p:last-child {
     font-size: 11px;
   }
 
@@ -1974,6 +1974,28 @@ p,h1,h2,h3,h4 {
   }
 }
 
-.hero-description,.section-description,.activity-time,.timeline p,.plan-footnote,.ticket-route p:not(.airport),.ticket-times span,.ticket-bottom,.flight-status-heading p,.status-message,.live-details,.flight-footnote,.route-planner-content>p,.route-planner summary>span,.anniversary-banner p:last-child,.countdown-label>p:last-child {
+.hero-description,.section-description,.activity-time,.timeline p,.plan-footnote,.ticket-route p:not(.airport),.ticket-times span,.ticket-bottom,.flight-status-heading p,.status-message,.live-details,.flight-footnote,.route-planner-content>p,.route-planner summary>span,.onward-banner p:last-child,.countdown-label>p:last-child {
   color: #69725f;
+}
+
+.visit-remaining {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 160px;
+  text-align: center;
+}
+
+.visit-remaining strong {
+  color: var(--foreground);
+  font-size: clamp(48px, 7vw, 76px);
+  font-weight: 400;
+  line-height: 1;
+}
+
+.visit-remaining span {
+  color: #69725f;
+  font-size: 11px;
+  margin-top: 10px;
 }

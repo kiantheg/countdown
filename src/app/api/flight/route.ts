@@ -58,13 +58,13 @@ export async function GET(request: NextRequest) {
   const cleaned = number?.replace(/\s+/g, "").toUpperCase() ?? "";
   if (!/^(?:[A-Z][A-Z0-9]|[0-9][A-Z]|[A-Z]{3})\d{1,4}[A-Z]?$/.test(cleaned)) {
     return NextResponse.json(
-      { error: "Provide a flight number like B6615." },
+      { error: "Provide a flight number like UA1227." },
       { status: 400 }
     );
   }
   if (date !== null && !isCalendarDate(date)) {
     return NextResponse.json(
-      { error: "Provide a valid departure date like 2026-10-28." },
+      { error: "Provide a valid departure date like 2026-11-18." },
       { status: 400 }
     );
   }

@@ -1,128 +1,80 @@
 {
-  "sourceModifiedAt": "2026-10-14T02:41:42.819Z",
-  "syncedAt": "2026-10-14T03:17:59.000Z",
+  "sourceModifiedAt": "2026-11-09T02:11:26.922Z",
+  "syncedAt": "2026-11-10T02:46:00.000Z",
   "days": [
     {
-      "date": "2026-10-28",
+      "date": "2026-11-18",
       "title": "Arrival in San Francisco",
+      "stay": "Airbnb",
+      "items": [
+        {
+          "time": "1:15 PM ET → 4:33 PM PT",
+          "title": "Newark → San Francisco",
+          "note": "United UA1227 · EWR to SFO"
+        },
+        {
+          "title": "Cook dinner"
+        },
+        {
+          "title": "Catch up"
+        }
+      ]
+    },
+    {
+      "date": "2026-11-19",
+      "title": "Class & Kappa formal",
+      "stay": "Airbnb",
+      "items": [
+        {
+          "time": "10:30–11:50",
+          "title": "Becca has class",
+          "note": "AM/PM not specified in the plan."
+        },
+        {
+          "title": "Dinner with Jenny, Robby and the Lees",
+          "tentative": true
+        },
+        {
+          "title": "Kappa formal"
+        },
+        {
+          "title": "Senior night?",
+          "tentative": true
+        }
+      ]
+    },
+    {
+      "date": "2026-11-20",
+      "title": "Class & Gaities",
       "stay": "KKG",
       "items": [
         {
-          "time": "5:55 PM ET → 9:41 PM PT",
-          "title": "New York → San Francisco",
-          "note": "JetBlue B6615 · JFK to SFO"
+          "time": "1:30–3:30",
+          "title": "Go to class with Becca",
+          "note": "AM/PM not specified in the plan."
+        },
+        {
+          "time": "7:00–9:30 PM",
+          "title": "Gaities"
         }
       ]
     },
     {
-      "date": "2026-10-29",
-      "title": "Settling in & Senior Night",
+      "date": "2026-11-21",
+      "title": "Big Game in Berkeley",
       "stay": "KKG",
       "items": [
         {
-          "time": "After arrival",
-          "title": "In-N-Out",
-          "note": "The plan says midnight; timing is flexible after landing and the airport transfer.",
-          "tentative": true
-        },
-        {
-          "time": "10:30–11:50 AM",
-          "title": "Becca has class"
-        },
-        {
-          "title": "Vote"
-        },
-        {
-          "title": "Double date?",
-          "tentative": true
-        },
-        {
-          "time": "10:00 PM",
-          "title": "Senior Night!"
+          "title": "Big Game at Berkeley"
         }
       ]
     },
     {
-      "date": "2026-10-30",
-      "title": "Pastries & Halloween plans",
-      "stay": "KKG",
+      "date": "2026-11-22",
+      "title": "Drive to Los Angeles",
       "items": [
         {
-          "title": "Arisicault"
-        },
-        {
-          "time": "1:30–3:20 PM",
-          "title": "Go to class with Becca"
-        },
-        {
-          "time": "After class",
-          "title": "Margaritas with class friends",
-          "tentative": true
-        },
-        {
-          "title": "SNu Halloween party or SF bar crawl",
-          "note": "Both options are TBD in the shared plan.",
-          "tentative": true
-        }
-      ]
-    },
-    {
-      "date": "2026-10-31",
-      "title": "Halloween",
-      "stay": "The Huntington Hotel",
-      "highlight": "halloween",
-      "items": [
-        {
-          "title": "Kian is planning the day",
-          "note": "Details to be confirmed.",
-          "tentative": true
-        }
-      ]
-    },
-    {
-      "date": "2026-11-01",
-      "title": "One-year anniversary",
-      "stay": "KKG",
-      "highlight": "anniversary",
-      "items": [
-        {
-          "title": "Anniversary dinner",
-          "note": "Becca is planning dinner; time and location to be confirmed.",
-          "tentative": true
-        }
-      ]
-    },
-    {
-      "date": "2026-11-02",
-      "title": "Monday on campus",
-      "stay": "KKG",
-      "items": [
-        {
-          "time": "11:30 AM–12:50 PM",
-          "title": "Go to class with Becca"
-        },
-        {
-          "title": "Lunch with Robby",
-          "tentative": true
-        },
-        {
-          "time": "2:15–3:45 PM",
-          "title": "Go to class with Becca"
-        },
-        {
-          "time": "4:30–6:00 PM",
-          "title": "Becca has a meeting"
-        }
-      ]
-    },
-    {
-      "date": "2026-11-03",
-      "title": "Return to New York",
-      "items": [
-        {
-          "time": "10:56 PM PT → 7:24 AM ET (+1 day)",
-          "title": "San Francisco → New York",
-          "note": "JetBlue B6616 · Arrives Wednesday, November 4"
+          "title": "Drive from Palo Alto to Los Angeles"
         }
       ]
     }

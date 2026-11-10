@@ -4,22 +4,20 @@ import test from 'node:test';
 import { validatePlan as validateItinerary } from '../src/lib/validate-plan.mjs';
 
 const dates = [
-  '2026-10-28',
-  '2026-10-29',
-  '2026-10-30',
-  '2026-10-31',
-  '2026-11-01',
-  '2026-11-02',
-  '2026-11-03',
+  '2026-11-18',
+  '2026-11-19',
+  '2026-11-20',
+  '2026-11-21',
+  '2026-11-22',
 ];
 
 function validItinerary() {
   return {
-    sourceModifiedAt: '2026-10-12T12:00:00.000Z',
-    syncedAt: '2026-10-12T12:01:00.000Z',
+    sourceModifiedAt: '2026-11-09T12:00:00.000Z',
+    syncedAt: '2026-11-09T12:01:00.000Z',
     days: dates.map((date) => ({
       date,
-      title: 'A day together',
+      title: 'Campus plans',
       stay: 'A place to stay',
       items: [{ title: 'Explore', time: 'Afternoon', note: 'Take our time', tentative: false }],
     })),
@@ -67,11 +65,11 @@ test('accepts inclusive text and item count limits', () => {
 
 test('accepts equal timestamps and compares timezone offsets as instants', () => {
   const value = validItinerary();
-  value.sourceModifiedAt = '2026-10-12T12:00:00+02:00';
-  value.syncedAt = '2026-10-12T10:00:00Z';
+  value.sourceModifiedAt = '2026-11-09T12:00:00+02:00';
+  value.syncedAt = '2026-11-09T10:00:00Z';
   assert.doesNotThrow(() => validateItinerary(value));
 
-  value.syncedAt = '2026-10-12T10:00:00.001Z';
+  value.syncedAt = '2026-11-09T10:00:00.001Z';
   assert.doesNotThrow(() => validateItinerary(value));
 });
 
@@ -97,14 +95,27 @@ test('rejects unknown fields at each level', () => {
   rejectsChange((value) => { value.days[0].items[0].extra = 'unexpected'; }, 'unknown item field');
 });
 
-test('requires exactly the seven ordered trip dates', () => {
+test('requires exactly the five ordered trip dates', () => {
   rejectsChange((value) => { value.days.pop(); }, 'missing day');
-  rejectsChange((value) => { value.days.push({ date: '2026-11-04', title: 'Extra', items: [] }); }, 'extra day');
+  rejectsChange((value) => { value.days.push({ date: '2026-11-23', title: 'Extra', items: [] }); }, 'extra day');
   rejectsChange((value) => { value.days[1].date = value.days[0].date; }, 'duplicate date');
   rejectsChange((value) => { [value.days[0], value.days[1]] = [value.days[1], value.days[0]]; }, 'reordered dates');
-  rejectsChange((value) => { value.days[0].date = '2026-10-27'; }, 'out of range date');
-  rejectsChange((value) => { value.days[0].date = '2026-10-28T00:00:00Z'; }, 'timestamp used as date');
-  rejectsChange((value) => { value.days[0].date = 20261028; }, 'non-string date');
+  rejectsChange((value) => { value.days[0].date = '2026-11-17'; }, 'out of range date');
+  rejectsChange((value) => { value.days[0].date = '2026-11-18T00:00:00Z'; }, 'timestamp used as date');
+  rejectsChange((value) => { value.days[0].date = 20261118; }, 'non-string date');
+});
+
+test('rejects dates carried over from the previous trip', () => {
+  const previousDates = [
+    '2026-10-28', '2026-10-29', '2026-10-30', '2026-10-31',
+    '2026-11-01', '2026-11-02', '2026-11-03',
+  ];
+  rejectsChange((value) => {
+    value.days = previousDates.map((date) => ({ date, title: 'Previous trip', items: [] }));
+  }, 'previous seven-day snapshot');
+  rejectsChange((value) => {
+    value.days = previousDates.slice(0, 5).map((date) => ({ date, title: 'Previous trip', items: [] }));
+  }, 'previous dates in a five-day snapshot');
 });
 
 test('rejects non-array collections and non-object entries', () => {
@@ -157,19 +168,19 @@ test('requires valid RFC3339 timestamps with a timezone and a real calendar day'
     {},
     '',
     'not a date',
-    '2026-10-12',
-    '2026-10-12T12:00:00',
-    '2026-10-12 12:00:00Z',
-    '2026-10-12T12:00Z',
-    '2026-10-12T12:00:00+0200',
+    '2026-11-09',
+    '2026-11-09T12:00:00',
+    '2026-11-09 12:00:00Z',
+    '2026-11-09T12:00Z',
+    '2026-11-09T12:00:00+0200',
     '2026-02-29T12:00:00Z',
     '2026-04-31T12:00:00Z',
     '2026-00-12T12:00:00Z',
     '2026-13-12T12:00:00Z',
     '2026-10-00T12:00:00Z',
-    '2026-10-12T25:00:00Z',
-    '2026-10-12T12:60:00Z',
-    '2026-10-12T12:00:00+24:00',
+    '2026-11-09T25:00:00Z',
+    '2026-11-09T12:60:00Z',
+    '2026-11-09T12:00:00+24:00',
   ];
   for (const key of ['sourceModifiedAt', 'syncedAt']) {
     for (const wrong of invalidTimestamps) {
@@ -180,10 +191,10 @@ test('requires valid RFC3339 timestamps with a timezone and a real calendar day'
 
 test('rejects a source modification after the sync instant', () => {
   rejectsChange((value) => {
-    value.sourceModifiedAt = '2026-10-12T12:01:00.001Z';
+    value.sourceModifiedAt = '2026-11-09T12:01:00.001Z';
   }, 'source one millisecond after sync');
   rejectsChange((value) => {
-    value.sourceModifiedAt = '2026-10-12T10:00:00-02:00';
-    value.syncedAt = '2026-10-12T11:00:00Z';
+    value.sourceModifiedAt = '2026-11-09T10:00:00-02:00';
+    value.syncedAt = '2026-11-09T11:00:00Z';
   }, 'source after sync across timezone offsets');
 });

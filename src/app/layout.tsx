@@ -3,8 +3,8 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   applicationName: "Kian & Becca",
-  title: "California Trip · October 28–November 3",
-  description: "Kian’s California visit, October 28–November 3, 2026. JetBlue flights, a day-by-day itinerary, and trip essentials.",
+  title: "California Trip · November 18–22",
+  description: "Kian’s California visit, November 18–22, 2026. United flight to San Francisco, five days in the Bay Area, and a drive to Los Angeles.",
   robots: { index: false, follow: false },
 };
 

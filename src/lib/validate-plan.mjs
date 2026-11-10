@@ -1,6 +1,5 @@
 const EXPECTED_DATES = [
-  "2026-10-28", "2026-10-29", "2026-10-30", "2026-10-31",
-  "2026-11-01", "2026-11-02", "2026-11-03",
+  "2026-11-18", "2026-11-19", "2026-11-20", "2026-11-21", "2026-11-22",
 ];
 
 function fail(path, message) {
@@ -49,7 +48,7 @@ export function validatePlan(value) {
   const syncedAt = timestamp(value.syncedAt, "syncedAt");
   if (sourceModifiedAt > syncedAt) fail("syncedAt", "cannot precede sourceModifiedAt.");
   if (!Array.isArray(value.days) || value.days.length !== EXPECTED_DATES.length) {
-    fail("days", "must contain all seven trip dates, October 28 through November 3, 2026.");
+    fail("days", "must contain all five trip dates, November 18 through November 22, 2026.");
   }
 
   for (const [index, day] of value.days.entries()) {

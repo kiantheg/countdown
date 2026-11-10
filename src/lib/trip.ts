@@ -10,7 +10,7 @@ export type FlightEndpoint = {
 };
 
 export type FlightLeg = {
-  id: "outbound" | "return";
+  id: "outbound";
   number: string;
   airline: string;
   departure: FlightEndpoint;
@@ -32,7 +32,7 @@ export type ItineraryDay = {
   highlight?: "halloween" | "anniversary";
 };
 
-export type TripPhase = "upcoming" | "together" | "homeward" | "complete";
+export type TripPhase = "upcoming" | "together" | "complete";
 
 export type Countdown = {
   days: number;
@@ -43,51 +43,34 @@ export type Countdown = {
 
 export const trip = {
   title: "Kian visits Becca",
-  startDate: "2026-10-28",
-  endDate: "2026-11-03",
+  startDate: "2026-11-18",
+  endDate: "2026-11-22",
   timeZone: "America/Los_Angeles",
+  /** The visit includes November 22; this boundary is not a road departure time. */
+  endAt: "2026-11-23T00:00:00-08:00",
+  syncEndsAt: "2026-11-24T08:00:00Z",
   planUrl:
-    "https://docs.google.com/document/d/1A24kcHDnDTgx_MNiKILdOdaSXqjE1Fgh0CGSzO0oZ-Q/edit?usp=drivesdk",
+    "https://docs.google.com/document/d/1QuB-3gcjSuSW8YGQPvlaKeoCN9thNYuRc_PbX7O2I1I/edit?usp=drivesdk",
 } as const;
 
-// Scheduled times verified against JetBlue's October 14, 2026 trip email. UTC offsets change
-// between the outbound and return journeys when daylight saving time ends.
+// Scheduled times verified against the United eTicket receipt dated October 5, 2026.
+// This visit has one confirmed flight; the November 22 departure is by road.
 export const flights: FlightLeg[] = [
   {
     id: "outbound",
-    number: "B6615",
-    airline: "JetBlue",
+    number: "UA1227",
+    airline: "United Airlines",
     departure: {
-      iata: "JFK",
-      city: "New York",
+      iata: "EWR",
+      city: "Newark",
       timeZone: "America/New_York",
-      terminal: "5",
-      at: "2026-10-28T17:55:00-04:00",
+      at: "2026-11-18T13:15:00-05:00",
     },
     arrival: {
       iata: "SFO",
       city: "San Francisco",
       timeZone: "America/Los_Angeles",
-      terminal: "1",
-      at: "2026-10-28T21:41:00-07:00",
-    },
-  },
-  {
-    id: "return",
-    number: "B6616",
-    airline: "JetBlue",
-    departure: {
-      iata: "SFO",
-      city: "San Francisco",
-      timeZone: "America/Los_Angeles",
-      terminal: "1",
-      at: "2026-11-03T22:56:00-08:00",
-    },
-    arrival: {
-      iata: "JFK",
-      city: "New York",
-      timeZone: "America/New_York",
-      at: "2026-11-04T07:24:00-05:00",
+      at: "2026-11-18T16:33:00-08:00",
     },
   },
 ];
@@ -101,8 +84,7 @@ export const planSync = {
 
 export function getTripPhase(nowMs: number): TripPhase {
   if (nowMs < Date.parse(flights[0].arrival.at)) return "upcoming";
-  if (nowMs < Date.parse(flights[1].departure.at)) return "together";
-  if (nowMs < Date.parse(flights[1].arrival.at)) return "homeward";
+  if (nowMs < Date.parse(trip.endAt)) return "together";
   return "complete";
 }
 
@@ -146,7 +128,7 @@ function foldCalendarLine(line: string): string {
   return output;
 }
 
-/** A deterministic calendar export containing only grounded dates and flights. */
+/** Export confirmed flights and grounded all-day plans, without inventing activity times. */
 export function buildTripCalendar(days: ItineraryDay[] = itinerary, syncedAt = planSync.syncedAt): string {
   const stamp = `DTSTAMP:${calendarUtc(syncedAt)}`;
   const lines = [
@@ -156,45 +138,46 @@ export function buildTripCalendar(days: ItineraryDay[] = itinerary, syncedAt = p
     "CALSCALE:GREGORIAN",
     "METHOD:PUBLISH",
     "BEGIN:VEVENT",
-    "UID:kian-becca-visit-20261028@countdown.local",
+    "UID:kian-becca-visit-20261118@countdown.local",
     stamp,
-    "DTSTART;VALUE=DATE:20261028",
-    "DTEND;VALUE=DATE:20261104",
-    `SUMMARY:${escapeCalendarText("Kian visits Becca · October 28–November 3")}`,
-    `DESCRIPTION:${escapeCalendarText("Activities are tentative; see the shared plan for updates. Return flight arrives in New York on November 4.\n" + trip.planUrl)}`,
+    "DTSTART;VALUE=DATE:20261118",
+    "DTEND;VALUE=DATE:20261123",
+    `SUMMARY:${escapeCalendarText("Kian visits Becca · November 18–22")}`,
+    `DESCRIPTION:${escapeCalendarText("Visit November 18–22. Activities and onward travel follow the shared plan; see it for current details and timing.\n" + trip.planUrl)}`,
     "END:VEVENT",
   ];
 
   for (const flight of flights) {
     lines.push(
       "BEGIN:VEVENT",
-      `UID:kian-becca-${flight.id}-20261028@countdown.local`,
+      `UID:kian-becca-${flight.id}-20261118@countdown.local`,
       stamp,
       `DTSTART:${calendarUtc(flight.departure.at)}`,
       `DTEND:${calendarUtc(flight.arrival.at)}`,
       `SUMMARY:${escapeCalendarText(`${flight.airline} ${flight.number} · ${flight.departure.iata} → ${flight.arrival.iata}`)}`,
       `LOCATION:${escapeCalendarText(`${flight.departure.city} (${flight.departure.iata})${flight.departure.terminal ? ` · Terminal ${flight.departure.terminal}` : ""}`)}`,
-      `DESCRIPTION:${escapeCalendarText(`Scheduled flight from ${flight.departure.city} to ${flight.arrival.city}. Check JetBlue for current flight status and terminal updates.`)}`,
+      `DESCRIPTION:${escapeCalendarText(`Scheduled flight from ${flight.departure.city} to ${flight.arrival.city}. Check ${flight.airline} for current flight status and terminal updates.`)}`,
       "END:VEVENT",
     );
   }
 
-  const anniversaryItems = days.find((day) => day.date === "2026-11-01")?.items ?? [];
-  const anniversaryDescription = anniversaryItems.length
-    ? anniversaryItems.map((item) => [item.time, item.title, item.note, item.tentative ? "Tentative" : null].filter(Boolean).join(" · ")).join("\n")
-    : "Anniversary plans are still to be confirmed. See the shared plan for updates.";
-
-  lines.push(
-    "BEGIN:VEVENT",
-    "UID:kian-becca-anniversary-20261101@countdown.local",
-    stamp,
-    "DTSTART;VALUE=DATE:20261101",
-    "DTEND;VALUE=DATE:20261102",
-    `SUMMARY:${escapeCalendarText("Kian & Becca · One-year anniversary")}`,
-    `DESCRIPTION:${escapeCalendarText(anniversaryDescription)}`,
-    "END:VEVENT",
-    "END:VCALENDAR",
-  );
+  const finalDay = days.find((day) => day.date === trip.endDate);
+  if (finalDay?.items.length) {
+    const finalDayDescription = finalDay.items
+      .map((item) => [item.time, item.title, item.note, item.tentative ? "Tentative" : null].filter(Boolean).join(" · "))
+      .join("\n");
+    lines.push(
+      "BEGIN:VEVENT",
+      "UID:kian-becca-final-day-20261122@countdown.local",
+      stamp,
+      "DTSTART;VALUE=DATE:20261122",
+      "DTEND;VALUE=DATE:20261123",
+      `SUMMARY:${escapeCalendarText(finalDay.title)}`,
+      `DESCRIPTION:${escapeCalendarText(`${finalDayDescription}\nAll-day date marker; see the shared plan for timing.\n${trip.planUrl}`)}`,
+      "END:VEVENT",
+    );
+  }
+  lines.push("END:VCALENDAR");
 
   return lines.map(foldCalendarLine).join("\r\n") + "\r\n";
 }
